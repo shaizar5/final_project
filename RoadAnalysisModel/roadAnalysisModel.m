@@ -5,7 +5,7 @@ function roadAnalysisModel()
     [Ct,projectionMatrixes,roadPointsOnImagePlane,roadPoints2d,actualIndices] = initDataMembers(totalNumOfPoints);
     pause;
     
-    if (constants.drawPointsIn3d)
+    if (Constants.drawPointsIn3d)
         drawPoints (roadPoints, '*m')
     end
     

@@ -20,55 +20,77 @@ function planeBoundries = calcFOV(Ct, focalLength, principlePoint, opticalAxis)
     plot3(edgeLeft(1),edgeTop(2),edgeTop(3),'og') %top-left
     plot3(edgeRight(1),edgeTop(2),edgeTop(3),'og') %top-right
      
-    edgeLeft = [edgeLeft(1),edgeBottom(2),edgeBottom(3)]';
-    edgeRight = [edgeRight(1),edgeBottom(2),edgeBottom(3)]';
-    edgeBottom = [edgeLeft(1),edgeTop(2),edgeTop(3)]';
-    edgeTop = [edgeRight(1),edgeTop(2),edgeTop(3)]';
+    planeLeftBottom = [edgeLeft(1),edgeBottom(2),edgeBottom(3)]';
+    planeRightBottom = [edgeRight(1),edgeBottom(2),edgeBottom(3)]';
+    planeLeftTop = [edgeLeft(1),edgeTop(2),edgeTop(3)]';
+    planeRightTop = [edgeRight(1),edgeTop(2),edgeTop(3)]';
     
-    u1 = edgeLeft-Ct;
-    u2 = edgeRight-Ct;
-    u3 = edgeBottom-Ct;
-    u4 = edgeTop-Ct;
+    
+    u1 = planeLeftBottom-Ct;
+    u2 = planeRightBottom-Ct;
+    u3 = planeLeftTop-Ct
+    %plot3([Ct(1) Ct(1)+50*u3(1)],[Ct(2) Ct(2)+50*u3(2)], [Ct(3) Ct(3)+50*u3(3)],'-k')
+    u4 = planeRightTop-Ct
 
     XZplane = [0,1,0,0];
-    XZleft = lineAndPlaneIntersection(XZplane, Ct, Ct+50*u1);
-    XZright = lineAndPlaneIntersection(XZplane, Ct, Ct+50*u2);
-    XZbottom = lineAndPlaneIntersection(XZplane, Ct, Ct+50*u3);
-    XZtop = lineAndPlaneIntersection(XZplane, Ct, Ct+50*u4);
-
-    
-    plot3(XZleft(1),XZleft(2),XZleft(3),'oy') %bottom-left
-    plot3(XZright(1),XZright(2),XZright(3),'om') %bottom-right
-    plot3(XZbottom(1),XZbottom(2),XZbottom(3),'ok') %top-left
-    plot3(XZtop(1),XZtop(2),XZtop(3),'ob') %top-right
-    
-    if (XZtop==Inf)
-        XZtop = [0,0,Constants.ROAD_DISTANCE];
+    XYplane_moved = [0,0,1,-Constants.ROAD_DISTANCE];
+    XZleftBottom = lineAndPlaneIntersection(XZplane, Ct, Ct+50*u1);
+    XZrightBottom = lineAndPlaneIntersection(XZplane, Ct, Ct+50*u2);
+    if (u3(3) >= 0)
+        XZleftTop = Ct + 10*u3;
+    else
+        XZleftTop = lineAndPlaneIntersection(XZplane, Ct, Ct+50*u3);
     end
-    if (XZbottom==Inf)
-        XZbottom = [0,0,Ct(3)];
+    tmp = lineAndPlaneIntersection(XYplane_moved, Ct, Ct+50*u3)
+    if (XZleftTop(3) > Constants.ROAD_DISTANCE)
+        XZleftTop = tmp
     end
-    drawFOVplane(Ct,XZleft,XZright,XZbottom,XZtop);
+    %XZleftTop = lineAndPlaneIntersection(XZplane, Ct, Ct+50*u3);
+    if (u4(3) >= 0)
+        XZrightTop = Ct + 10*u4;
+    else
+        XZrightTop = lineAndPlaneIntersection(XZplane, Ct, Ct+50*u4);
+    end
+    tmp = lineAndPlaneIntersection(XYplane_moved, Ct, Ct+50*u4)
+    if (XZrightTop(3) > Constants.ROAD_DISTANCE)
+        XZrightTop = tmp
+    end
+    %XZrightTop = lineAndPlaneIntersection(XZplane, Ct, Ct+50*u4);
+    
+    plot3(XZleftBottom(1),XZleftBottom(2),XZleftBottom(3),'oy') %bottom-left
+    plot3(XZrightBottom(1),XZrightBottom(2),XZrightBottom(3),'om') %bottom-right
+    plot3(XZleftTop(1),XZleftTop(2),XZleftTop(3),'ok') %top-left
+    plot3(XZrightTop(1),XZrightTop(2),XZrightTop(3),'ob') %top-right
+    
+    if (XZrightTop==Inf)
+        %XZrightTop = [0,0,Constants.ROAD_DISTANCE];
+    end
+    if (XZleftTop==Inf)
+        %XZleftTop = [0,0,Ct(3)];
+    end
+    drawFOVplane(Ct,XZleftBottom,XZrightBottom,XZleftTop,XZrightTop);
 
-    plot3([Ct(1) XZleft(1)],[Ct(2) XZleft(2)], [Ct(3) XZleft(3)],'-k')
-    plot3([Ct(1) XZright(1)],[Ct(2) XZright(2)], [Ct(3) XZright(3)],'-k')
-    plot3([Ct(1) XZbottom(1)],[Ct(2) XZbottom(2)], [Ct(3) XZbottom(3)],'-k')
-    plot3([Ct(1) XZtop(1)],[Ct(2) XZtop(2)], [Ct(3) XZtop(3)],'-k')
+    %plot3([Ct(1) XZleftBottom(1)],[Ct(2) XZleftBottom(2)], [Ct(3) XZleftBottom(3)],'-k')
+    %plot3([Ct(1) XZrightBottom(1)],[Ct(2) XZrightBottom(2)], [Ct(3) XZrightBottom(3)],'-k')
+    plot3([Ct(1) XZleftTop(1)],[Ct(2) XZleftTop(2)], [Ct(3) XZleftTop(3)],'-k')
+    plot3([Ct(1) XZrightTop(1)],[Ct(2) XZrightTop(2)], [Ct(3) XZrightTop(3)],'-k')
 end
 
-function drawFOVplane(Ct, XZleft,XZright,XZbottom,XZtop)
-    minZ = min([XZbottom(3),XZtop(3),XZleft(3),XZright(1)]);
-    maxZ = max([XZbottom(3),XZtop(3),XZleft(3),XZright(1)]);
+function drawFOVplane(Ct, XZleftBottom,XZrightBottom,XZleftTop,XZrightTop)
+    minZ = min([XZleftTop(3),XZrightTop(3),XZleftBottom(3),XZrightBottom(3)]);
+    maxZ = max([XZleftTop(3),XZrightTop(3),XZleftBottom(3),XZrightBottom(3)]);
     
-    bottomLeft = [XZleft(1), 0 ,  minZ];
-    bottomRight = [XZright(1), 0 ,  minZ];
-    topLeft = [XZleft(1), 0 ,  maxZ];
-    topRight = [XZright(1), 0 ,  maxZ];
+    
 
-    plot3(bottomLeft(1),bottomLeft(2),bottomLeft(3),'or') %bottom-left
-    plot3(bottomRight(1),bottomRight(2),bottomRight(3),'or') %bottom-right
-    plot3(topLeft(1),topLeft(2),topLeft(3),'or') %top-left
-    plot3(topRight(1),topRight(2),topRight(3),'or') %top-right
+    plot3(XZleftBottom(1), 0 ,  minZ,'or') %bottom-left
+    plot3(XZrightBottom(1), 0 ,  minZ,'or') %bottom-right
+    plot3(XZleftTop(1), XZleftTop(2),  maxZ,'or') %top-left
+    plot3(XZrightTop(1), XZrightTop(2) ,  maxZ,'or') %top-right
+    
+    bottomLeft = [XZleftBottom(1), 0 ,  minZ];
+    bottomRight = [XZrightBottom(1), 0 ,  minZ];
+    topLeft = [XZleftTop(1), 0 ,  maxZ];
+    topRight = [XZrightTop(1), 0 ,  maxZ];
     
     if (Constants.drawFOVplane)
         FovPlane = [bottomLeft; topLeft; topRight; bottomRight];
@@ -77,15 +99,18 @@ function drawFOVplane(Ct, XZleft,XZright,XZbottom,XZtop)
     end
 
     if (Constants.drawFOVarea)
-        drawFOVarea(Ct, topLeft, topRight);
-        drawFOVarea(Ct, topLeft, bottomLeft);
-        drawFOVarea(Ct, topRight, bottomRight);
-        drawFOVarea(Ct, bottomLeft, bottomRight);
+        
+        drawFOVarea([Ct'; XZrightTop(1), XZrightTop(2) ,  maxZ ; XZleftTop(1), XZleftTop(2),  maxZ]);
+        drawFOVarea([ Ct'; bottomLeft; topLeft; XZleftTop(1), XZleftTop(2),  maxZ ]);
+        drawFOVarea([Ct'; bottomRight; topRight; XZrightTop(1), XZrightTop(2) ,  maxZ]);
+        drawFOVarea([Ct'; bottomLeft; bottomRight]);
+        
+        %drawFOVarea(Ct, bottomLeft, bottomRight);
     end
 end
 
-function drawFOVarea(Ct, p1, p2)
-    FovArea = [Ct'; p1; p2];
+function drawFOVarea(FovArea)
+    
     fill3 (FovArea(:,1),FovArea(:,2),FovArea(:,3),'b')
     alpha(0.2)
 end
