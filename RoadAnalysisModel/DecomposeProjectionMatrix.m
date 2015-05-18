@@ -10,7 +10,7 @@ function [K, R, C] = DecomposeProjectionMatrix(P)
 % R 3x3 the camera rotation matrix 
 % C 3x1 the camera center of projection
 
-nP = null(P) ;
+nP = null(P) 
 Ch = zeros(3,1);
 if (nP(4)~=0)
     Ch = nP ./nP(4);
