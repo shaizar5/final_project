@@ -1,0 +1,62 @@
+function [matchedPointsLeft, matchedPointsRight, matchingIndices] = epipolarLines(projectionMatrixes, Ct, R, roadPoints2d, actualIndices)
+    [matchedPointsLeft, matchedPointsRight, matchingIndices] = findMatchingPoints(roadPoints2d, actualIndices);
+
+    matchPointSize = size(matchedPointsLeft);
+    if (matchPointSize(1)<8)
+        return
+    end
+    F = estimateFundamentalMatrix(matchedPointsLeft, matchedPointsRight, 'Method', 'RANSAC', 'NumTrials', 10000, 'DistanceThreshold', 0.1, 'Confidence', 99.99);
+    
+    el = findEpipol(F, matchedPointsLeft,2);
+    er = findEpipol(F', matchedPointsRight,3);
+
+    if (Constants.drawEpipolarLines)
+        drawEpipolarLines(roadPoints2d(:,:,1), el,2);
+        drawEpipolarLines(roadPoints2d(:,:,2), er,3);
+    end
+  %{
+    f=50;
+    t = getImagePointsIn3D([0;0], el(1:2), Ct(:,1), projectionMatrixes(:,1:4), R, f, 'ro');
+    plot3(t(1),t(2),t(3),'g*')
+    t = getImagePointsIn3D([0;0], er(1:2), Ct(:,2), projectionMatrixes(:,5:8), R, f, 'ro');
+    plot3(t(1),t(2),t(3),'g*')
+    %}
+end
+
+function epipol = findEpipol(F, matchedPoints,fig)
+    x1 = [matchedPoints(1,:),1];
+    x2 = [matchedPoints(2,:),1];
+    l1 = F*x1';
+    l2 = F*x2';
+    epipol = cross(l1,l2);
+    epipol = Utilities.nonHomogeneousCoords(epipol);
+    if (Constants.drawEpipole)
+        figure(fig)
+        plot(epipol(1),epipol(2), 'g*')
+    end
+end
+
+function [matchedPointsLeft, matchedPointsRight, matchingIndices] = findMatchingPoints(roadPoints2d, actualIndices)
+    leftPoints = roadPoints2d(:,:,1);
+    rightPoints = roadPoints2d(:,:,2);
+    
+    iRight = actualIndices(:,2);
+    iLeft = actualIndices(:,1);
+    
+    matchedPointsLeft = zeros(1,2);
+    matchedPointsRight = zeros(1,2);
+    matchingIndices = [];
+    counter=1;
+    len = sum(iRight~=0);
+
+    for j=1:len
+        currIndex = find(iLeft==iRight(j));
+        if (size(currIndex,1)==0)
+            continue
+        end
+        matchedPointsLeft(counter,:) = leftPoints(:, currIndex)';
+        matchedPointsRight(counter,:) = rightPoints(:, j)';
+        matchingIndices(counter) = iRight(j);
+        counter = counter+1;
+    end
+end
