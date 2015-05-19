@@ -2,7 +2,7 @@ function planeBoundries = calcFOV(Ct, focalLength, principlePoint, opticalAxis)
     angleInRadians = degtorad(Constants.ANGLE_OF_VIEW);
     lengthOfX = tan(angleInRadians)*focalLength;
     u = univec(cross(opticalAxis,[-lengthOfX,0,0]'));
-
+    
     edgeLeft = principlePoint+[-lengthOfX,0,0]';
     edgeRight = principlePoint+[lengthOfX,0,0]';
     edgeBottom = principlePoint+lengthOfX*u;
