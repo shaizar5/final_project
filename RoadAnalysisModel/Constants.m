@@ -29,9 +29,9 @@ classdef Constants
 		
         %draw
         drawRoad = true;
-        drawFOVarea = true;
+        drawFOVarea = false;
         drawFOVplane = false;
-        drawCameraPlane = true;
+        drawCameraPlane = false;
         drawCameraRoadIntersectionPoints = false;
         drawClassification = false;
         drawEpipole = false;
@@ -39,8 +39,9 @@ classdef Constants
         drawDisparity = false;
         drawDisparityClassification = false;
         drawPointsDistance = false;
-        drawPointsIn2dFigures = true;
-        draw3dPointsOn2dPlane = true;
-        drawPointsIn3d = true;
+        drawPointsIn2dFigures = false;
+        draw3dPointsOn2dPlane = false;
+        drawPointsIn3d = false;
+        drawFovBoundries = false;
     end  
 end
