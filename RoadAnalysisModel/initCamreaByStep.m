@@ -7,10 +7,9 @@ function [R, Ct] = initCamreaByStep(step)
          0, -sin(alpha), cos(alpha)];
 
     stepSizeNoise = floor(Constants.MIN_STEP_SIZE_MISTAKE + (Constants.MAX_STEP_SIZE_MISTAKE-Constants.MIN_STEP_SIZE_MISTAKE+1)*rand(1));
-    stepSizeWithNoise = Constants.STEP_SIZE+stepSizeNoise;
+    stepSizeWithNoise = Constants.AVERAGE_BLIND_MAN_SPEED+stepSizeNoise;
     cameraHeightNoise = floor(Constants.MIN_CAMERA_HEIGHT_MISTAKE + (Constants.MAX_CAMERA_HEIGHT_MISTAKE-Constants.MIN_CAMERA_HEIGHT_MISTAKE+1)*rand(1));
     cameraHeightWithNoise = Constants.CAMERA_HEIGHT + cameraHeightNoise;
     
-%	Ct = [0,Constants.CAMERA_HEIGHT,(step-1)*Constants.AVERAGE_BLIND_MAN_SPEED*(1/Constants.FRAMES_PER_SECOND)]'; 
-    Ct = [0,cameraHeightWithNoise,(step-1)*stepSizeWithNoise]'; 
+	Ct = [0,Constants.CAMERA_HEIGHT,(step-1)*stepSizeWithNoise*(1/Constants.FRAMES_PER_SECOND)]'; 
 end
