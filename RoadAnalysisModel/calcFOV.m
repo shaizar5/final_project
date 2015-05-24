@@ -28,10 +28,9 @@ function planeBoundries = calcFOV(Ct, focalLength, principlePoint, opticalAxis)
     
     u1 = planeLeftBottom-Ct;
     u2 = planeRightBottom-Ct;
-    u3 = planeLeftTop-Ct
-    %plot3([Ct(1) Ct(1)+50*u3(1)],[Ct(2) Ct(2)+50*u3(2)], [Ct(3) Ct(3)+50*u3(3)],'-k')
-    u4 = planeRightTop-Ct
-
+    u3 = planeLeftTop-Ct;
+    u4 = planeRightTop-Ct;
+    
     XZplane = [0,1,0,0];
     XYplane_moved = [0,0,1,-Constants.ROAD_DISTANCE];
     XZleftBottom = lineAndPlaneIntersection(XZplane, Ct, Ct+50*u1);
@@ -41,9 +40,9 @@ function planeBoundries = calcFOV(Ct, focalLength, principlePoint, opticalAxis)
     else
         XZleftTop = lineAndPlaneIntersection(XZplane, Ct, Ct+50*u3);
     end
-    tmp = lineAndPlaneIntersection(XYplane_moved, Ct, Ct+50*u3)
+    tmp = lineAndPlaneIntersection(XYplane_moved, Ct, Ct+50*u3);
     if (XZleftTop(3) > Constants.ROAD_DISTANCE)
-        XZleftTop = tmp
+        XZleftTop = tmp;
     end
     %XZleftTop = lineAndPlaneIntersection(XZplane, Ct, Ct+50*u3);
     if (u4(3) >= 0)
@@ -51,16 +50,18 @@ function planeBoundries = calcFOV(Ct, focalLength, principlePoint, opticalAxis)
     else
         XZrightTop = lineAndPlaneIntersection(XZplane, Ct, Ct+50*u4);
     end
-    tmp = lineAndPlaneIntersection(XYplane_moved, Ct, Ct+50*u4)
+    tmp = lineAndPlaneIntersection(XYplane_moved, Ct, Ct+50*u4);
     if (XZrightTop(3) > Constants.ROAD_DISTANCE)
-        XZrightTop = tmp
+        XZrightTop = tmp;
     end
     %XZrightTop = lineAndPlaneIntersection(XZplane, Ct, Ct+50*u4);
     
-    plot3(XZleftBottom(1),XZleftBottom(2),XZleftBottom(3),'oy') %bottom-left
-    plot3(XZrightBottom(1),XZrightBottom(2),XZrightBottom(3),'om') %bottom-right
-    plot3(XZleftTop(1),XZleftTop(2),XZleftTop(3),'ok') %top-left
-    plot3(XZrightTop(1),XZrightTop(2),XZrightTop(3),'ob') %top-right
+    if (Constants.drawFOVarea)
+        plot3(XZleftBottom(1),XZleftBottom(2),XZleftBottom(3),'oy') %bottom-left
+        plot3(XZrightBottom(1),XZrightBottom(2),XZrightBottom(3),'om') %bottom-right
+        plot3(XZleftTop(1),XZleftTop(2),XZleftTop(3),'ok') %top-left
+        plot3(XZrightTop(1),XZrightTop(2),XZrightTop(3),'ob') %top-right
+    end
     
     if (XZrightTop==Inf)
         %XZrightTop = [0,0,Constants.ROAD_DISTANCE];
@@ -72,8 +73,8 @@ function planeBoundries = calcFOV(Ct, focalLength, principlePoint, opticalAxis)
 
     %plot3([Ct(1) XZleftBottom(1)],[Ct(2) XZleftBottom(2)], [Ct(3) XZleftBottom(3)],'-k')
     %plot3([Ct(1) XZrightBottom(1)],[Ct(2) XZrightBottom(2)], [Ct(3) XZrightBottom(3)],'-k')
-    plot3([Ct(1) XZleftTop(1)],[Ct(2) XZleftTop(2)], [Ct(3) XZleftTop(3)],'-k')
-    plot3([Ct(1) XZrightTop(1)],[Ct(2) XZrightTop(2)], [Ct(3) XZrightTop(3)],'-k')
+    %plot3([Ct(1) XZleftTop(1)],[Ct(2) XZleftTop(2)], [Ct(3) XZleftTop(3)],'-k')
+    %plot3([Ct(1) XZrightTop(1)],[Ct(2) XZrightTop(2)], [Ct(3) XZrightTop(3)],'-k')
 end
 
 function drawFOVplane(Ct, XZleftBottom,XZrightBottom,XZleftTop,XZrightTop)
@@ -81,11 +82,12 @@ function drawFOVplane(Ct, XZleftBottom,XZrightBottom,XZleftTop,XZrightTop)
     maxZ = max([XZleftTop(3),XZrightTop(3),XZleftBottom(3),XZrightBottom(3)]);
     
     
-
-    plot3(XZleftBottom(1), 0 ,  minZ,'or') %bottom-left
-    plot3(XZrightBottom(1), 0 ,  minZ,'or') %bottom-right
-    plot3(XZleftTop(1), XZleftTop(2),  maxZ,'or') %top-left
-    plot3(XZrightTop(1), XZrightTop(2) ,  maxZ,'or') %top-right
+    if (Constants.drawFOVarea)
+        plot3(XZleftBottom(1), 0 ,  minZ,'or') %bottom-left
+        plot3(XZrightBottom(1), 0 ,  minZ,'or') %bottom-right
+        plot3(XZleftTop(1), XZleftTop(2),  maxZ,'or') %top-left
+        plot3(XZrightTop(1), XZrightTop(2) ,  maxZ,'or') %top-right
+    end
     
     bottomLeft = [XZleftBottom(1), 0 ,  minZ];
     bottomRight = [XZrightBottom(1), 0 ,  minZ];
