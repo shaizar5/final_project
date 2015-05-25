@@ -21,8 +21,7 @@ K = [alphaX, s, x0;...
 KRC = (K*R*Ct).*(-1);
 
 P = [K*R , KRC]
-if (P(3,4)~=0)
-    P = P./P(3,4)
-end
+if (P(3,4)
+P = P./P(3,4)
 end
 
