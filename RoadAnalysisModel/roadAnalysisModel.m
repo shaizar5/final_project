@@ -1,5 +1,5 @@
 function roadAnalysisModel()
-    runMode = 'shapes';
+    runMode = 'random';
     initialFiguresState(runMode);
     [roadPoints, totalNumOfPoints] = initRoad(runMode);
     [Ct,projectionMatrixes,roadPointsOnImagePlane,roadPoints2d,actualIndices] = initDataMembers(totalNumOfPoints);

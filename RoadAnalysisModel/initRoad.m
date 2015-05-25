@@ -3,7 +3,7 @@ switch mode
     case 'random' 
         totalNumOfPoints = Constants.NUM_OF_POINT_TO_GENERATE;
         roadPoints = generatePoints(totalNumOfPoints);
-        drawPoints(roadPoints, '*b'); 
+        %drawPoints(roadPoints, '*b'); 
     case 'disparity'
         roadRight = Constants.ROAD_WIDTH/2;
         roadLeft  = -roadRight;

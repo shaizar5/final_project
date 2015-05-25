@@ -7,9 +7,9 @@ classdef Constants
         ROAD_DISTANCE = 1000;
         ABOVE_ROAD_HEIGHT = 200;
         MIN_HEIGHT_ABOVE_ROAD = 2;
-        ANGLE_OF_VIEW = 50;
+        ANGLE_OF_VIEW = ;
         CAMERA_HEIGHT = 130;
-        CAMERA_ROTATION_IN_DEGREES = 0;
+        CAMERA_ROTATION_IN_DEGREES = 50;
         STEP_SIZE = 50;
         NUM_OF_POINT_TO_GENERATE = 100;
         NUM_OF_CAMERA_HISTORY = 2;
@@ -31,17 +31,16 @@ classdef Constants
         drawRoad = true;
         drawFOVarea = false;
         drawFOVplane = false;
-        drawCameraPlane = false;
+        drawCameraPlane = true;
         drawCameraRoadIntersectionPoints = false;
         drawClassification = false;
-        drawEpipole = true;
+        drawEpipole = false;
         drawEpipolarLines = false;
         drawDisparity = false;
         drawDisparityClassification = false;
         drawPointsDistance = false;
-        drawPointsIn2dFigures = false;
-        draw3dPointsOn2dPlane = false;
-        drawPointsIn3d = false;
-        drawFovBoundries = false;
+        drawPointsIn2dFigures = true;
+        draw3dPointsOn2dPlane = true;
+        drawPointsIn3d = true;
     end  
 end
