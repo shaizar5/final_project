@@ -20,9 +20,9 @@ K = [alphaX, s, x0;...
     0,0,1];
 KRC = (K*R*Ct).*(-1);
 
-P = [K*R , KRC]
+P = [K*R , KRC];
 if (P(3,4)~=0)
-    P = P./P(3,4)
+    P = P./P(3,4);
 end
 end
 

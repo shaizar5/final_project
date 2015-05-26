@@ -1,4 +1,4 @@
-function [f, px, py, mx, my, s] = GetInternalParameters()
+function [f, px, py, mx, my, s] = getInternalParameters()
    f = 50;  % between camera plane and camera center
    s = 0;   % the skew
 

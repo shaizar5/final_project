@@ -12,5 +12,5 @@ function [R, Ct] = initCamreaByStep(step)
     cameraHeightWithNoise = Constants.CAMERA_HEIGHT + cameraHeightNoise;
     
 %	Ct = [0,Constants.CAMERA_HEIGHT,(step-1)*Constants.AVERAGE_BLIND_MAN_SPEED*(1/Constants.FRAMES_PER_SECOND)]'; 
-    Ct = [0,cameraHeightWithNoise,(step-1)*stepSizeWithNoise]'; 
+    Ct = [0,cameraHeightWithNoise,(step-1)*stepSizeWithNoise]'
 end

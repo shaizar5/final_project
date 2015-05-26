@@ -5,10 +5,11 @@ function [matchedPointsLeft, matchedPointsRight, matchingIndices] = epipolarLine
     if (matchPointSize(1)<8)
         return
     end
-    F = estimateFundamentalMatrix(matchedPointsLeft, matchedPointsRight, 'Method', 'RANSAC', 'NumTrials', 10000, 'DistanceThreshold', 0.1, 'Confidence', 99.99);
-    
-    el = findEpipol(F, matchedPointsLeft,2);
-    er = findEpipol(F', matchedPointsRight,3);
+    F = estimateFundamentalMatrix(matchedPointsLeft, matchedPointsRight, 'Method', 'RANSAC', 'NumTrials', 10000, 'DistanceThreshold', 0.1, 'Confidence', 99.99)
+    tform = estimateGeometricTransform(matchedPointsLeft,matchedPointsRight,'similar');
+    tform.T
+    el = findEpipol(F, matchedPointsLeft,2)
+    er = findEpipol(F', matchedPointsRight,3)
 
     if (Constants.drawEpipolarLines)
         drawEpipolarLines(roadPoints2d(:,:,1), el,2);
