@@ -9,7 +9,12 @@ function roadAnalysisModel()
         drawPoints (roadPoints, '*m')
     end
     
-    for step=1:Constants.NUM_OF_STEPS
+    numOfSteps=Constants.NUM_OF_STEPS;
+    if (strcmp(runMode,'disparity'))
+      numOfSteps=2;
+    end
+        
+    for step=1:numOfSteps
         i = min(step,Constants.NUM_OF_CAMERA_HISTORY);
         [f, px, py, mx, my, s] = getInternalParameters();    
         [R, currCt] = initCamreaByStep(step);
@@ -32,6 +37,7 @@ function roadAnalysisModel()
         disparity = calcDisparity(matchedPointsLeft, matchedPointsRight);
         drawDisparity(disparity, roadPoints, matchedPointsRight, matchingIndices, Ct(:,2));
         disparityClassification(roadPoints,matchingIndices, disparity);
+        
         if (strcmp(runMode,'disparity'))
             draw3dDisparityVolume(disparity, roadPoints, matchingIndices);
         end
