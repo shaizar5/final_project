@@ -6,7 +6,7 @@ function roadAnalysisModel()
     pause;
     
     if (Constants.drawPointsIn3d)
-        drawPoints (roadPoints, '*m')
+        drawPoints (roadPoints, '*b')
     end
     
     numOfSteps=Constants.NUM_OF_STEPS;
@@ -23,6 +23,7 @@ function roadAnalysisModel()
         figure (1)
         intersectionPoints = lineAndPlaneIntersection(imagePlane, Ct(:,i), Ct(:,i)+50*R(3,:)');
         planeBoundries = calcFOV(Ct(:,i), f, intersectionPoints, R(3,:)');
+        
         drawCameraPlane(planeBoundries);
         projectionMatrixes(:,:,i) = ProjectionMatrix(R,currCt,f,px,py,mx,my,s);
         [roadPointsOnImagePlane(:,:,i), roadPoints2d(:,:,i), actualIndices(:,i)] = calc(roadPoints,totalNumOfPoints, planeBoundries, projectionMatrixes(:,:,i), currCt, i,R, f);        
@@ -35,7 +36,7 @@ function roadAnalysisModel()
         classifyPoints(roadPointsOnImagePlane,actualIndices,Ct,i);        
         [matchedPointsLeft, matchedPointsRight, matchingIndices] = epipolarLines(projectionMatrixes, Ct, R, roadPoints2d, actualIndices);
         disparity = calcDisparity(matchedPointsLeft, matchedPointsRight);
-        drawDisparity(disparity, roadPoints, matchedPointsRight, matchingIndices, Ct(:,2));
+        drawDisparity(disparity, roadPoints, matchedPointsLeft, matchedPointsRight, matchingIndices);
         disparityClassification(roadPoints,matchingIndices, disparity);
         
         if (strcmp(runMode,'disparity'))

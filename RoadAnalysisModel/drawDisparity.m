@@ -1,12 +1,13 @@
-function drawDisparity(disparity, roadPoints, matchedPointsRight, matchingIndices, Ct)
+function drawDisparity(disparity, roadPoints,matchedPointsLeft, matchedPointsRight, matchingIndices)
     if (Constants.drawDisparity)
-        draw2dDisparity(disparity, matchedPointsRight);
+        draw2dDisparity(disparity, matchedPointsLeft,2);
+        draw2dDisparity(disparity, matchedPointsRight,3);
         draw3dDisparity(disparity, roadPoints, matchingIndices);
         %drawRadius(Ct)
     end
 end
 
-function drawRadius(Ct)
+function drawRadius()
     figure(1)
     xgv = linspace(-200,200,1000);
     ygv = linspace(-200,200,1000);
@@ -16,8 +17,8 @@ function drawRadius(Ct)
     surf(X,Y,Z)
 end
 
-function draw2dDisparity(disparity, matchedPointsRight)
-    figure(3)
+function draw2dDisparity(disparity, matchedPointsRight, fig)
+    figure(fig)
     len = size(disparity,2);
     for i=1:len
         p = matchedPointsRight(i,:);

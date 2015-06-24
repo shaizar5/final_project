@@ -15,7 +15,7 @@ function [pointsIn3D, points2d, actualPointsIndices] = featuresPoints(points, pl
     if (Constants.drawPointsIn2dFigures)
         figure(i+1)
         hold on
-        drawPoints(points2d, '.m');
+        drawPoints(points2d, '.b');
     end
     pointsIn3D = getImagePointsIn3D(actualOnRoadPoints3d, points2d, Ct, P, R, f, '.m');
 end
