@@ -9,9 +9,9 @@ classdef Constants
         MIN_HEIGHT_ABOVE_ROAD = 2;
         ANGLE_OF_VIEW = 50;
         CAMERA_HEIGHT = 130;
-        CAMERA_ROTATION_IN_DEGREES = 0;
-        STEP_SIZE = 50;
-        NUM_OF_POINT_TO_GENERATE = 100;
+        CAMERA_ROTATION_IN_DEGREES = 20;
+        STEP_SIZE = 150;
+        NUM_OF_POINT_TO_GENERATE = 500;
         NUM_OF_CAMERA_HISTORY = 2;
         DISPARITY_THRESHOLD=5;
 
@@ -23,7 +23,7 @@ classdef Constants
         MIN_CAMERA_ROTATION_IN_DEGREES_MISTAKE = 0;
         MAX_CAMERA_ROTATION_IN_DEGREES_MISTAKE = 0;
         
-		NUM_OF_SHAPES = 4;
+		NUM_OF_SHAPES = 3;
         FRAMES_PER_SECOND = 10;
         AVERAGE_BLIND_MAN_SPEED = 40; % 0.4 m/s
 		

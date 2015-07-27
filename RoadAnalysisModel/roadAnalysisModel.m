@@ -1,12 +1,12 @@
 function roadAnalysisModel()
-    runMode = 'random';
+    runMode = 'road_points';
     initialFiguresState(runMode);
     [roadPoints, totalNumOfPoints] = initRoad(runMode);
     [Ct,projectionMatrixes,roadPointsOnImagePlane,roadPoints2d,actualIndices] = initDataMembers(totalNumOfPoints);
     pause;
     
     if (Constants.drawPointsIn3d)
-        drawPoints (roadPoints, '*m')
+        drawPoints (roadPoints, '*b')
     end
     
     for step=1:Constants.NUM_OF_STEPS
@@ -29,6 +29,7 @@ function roadAnalysisModel()
         
         classifyPoints(roadPointsOnImagePlane,actualIndices,Ct,i);        
         [matchedPointsLeft, matchedPointsRight, matchingIndices] = epipolarLines(projectionMatrixes, Ct, R, roadPoints2d, actualIndices);
+        H = HomographyEstimation(matchedPointsLeft', matchedPointsRight', 'RANSAC');
         disparity = calcDisparity(matchedPointsLeft, matchedPointsRight);
         drawDisparity(disparity, roadPoints, matchedPointsRight, matchingIndices, Ct(:,2));
         disparityClassification(roadPoints,matchingIndices, disparity);

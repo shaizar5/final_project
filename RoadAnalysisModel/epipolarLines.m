@@ -15,6 +15,12 @@ function [matchedPointsLeft, matchedPointsRight, matchingIndices] = epipolarLine
         drawEpipolarLines(roadPoints2d(:,:,1), el,2);
         drawEpipolarLines(roadPoints2d(:,:,2), er,3);
     end
+    if (Constants.drawEpipole)
+        figure(2)
+        plot(el(1),el(2), 'g*')
+        figure(3)
+        plot(er(1),er(2), 'g*')
+    end
   %{
     f=50;
     t = getImagePointsIn3D([0;0], el(1:2), Ct(:,1), projectionMatrixes(:,1:4), R, f, 'ro');
@@ -31,10 +37,7 @@ function epipol = findEpipol(F, matchedPoints,fig)
     l2 = F*x2';
     epipol = cross(l1,l2);
     epipol = Utilities.nonHomogeneousCoords(epipol);
-    if (Constants.drawEpipole)
-        figure(fig)
-        plot(epipol(1),epipol(2), 'g*')
-    end
+    
 end
 
 function [matchedPointsLeft, matchedPointsRight, matchingIndices] = findMatchingPoints(roadPoints2d, actualIndices)
