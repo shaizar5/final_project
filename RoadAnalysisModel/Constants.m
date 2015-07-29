@@ -9,7 +9,7 @@ classdef Constants
         MIN_HEIGHT_ABOVE_ROAD = 2;
         ANGLE_OF_VIEW = 50;
         CAMERA_HEIGHT = 130;
-        CAMERA_ROTATION_IN_DEGREES = 20;
+        CAMERA_ROTATION_IN_DEGREES = 0;
         STEP_SIZE = 150;
         NUM_OF_POINT_TO_GENERATE = 500;
         NUM_OF_CAMERA_HISTORY = 2;
