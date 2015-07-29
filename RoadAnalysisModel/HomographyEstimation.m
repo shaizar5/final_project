@@ -1,4 +1,4 @@
-function H = HomographyEstimation(leftPoints, rightPoints, method)
+function H = HomographyEstimation(leftPoints, rightPoints, method, K)
 
 if (strcmp(method,'RANSAC'))
     %ransac
@@ -28,6 +28,15 @@ else
     %x2 = [x(1,:)./x(3,:) ; x(2,:)./x(3,:) ;x(3,:)./x(3,:) ]
     %[rightPoints;ones(1,sizeLeft(2))]
     %H*[leftPoints(:,1);1];
+   
+    
+    % For more info - https://en.wikipedia.org/wiki/Homography_(computer_vision)
+    Hab = (inv(K)*H*K);
+    Hab = Hab./Hab(3,3)
+    tmp = (eye(3)-Hab)*Constants.CAMERA_HEIGHT
+    t = -round(tmp(:,2))
+    
+    
 end
 
 
