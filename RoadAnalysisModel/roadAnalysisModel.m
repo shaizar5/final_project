@@ -1,4 +1,5 @@
 function roadAnalysisModel()
+    %%
     runMode = 'road_points';
     initialFiguresState(runMode);
     [roadPoints, totalNumOfPoints] = initRoad(runMode);
@@ -6,9 +7,10 @@ function roadAnalysisModel()
     pause;
     
     if (Constants.drawPointsIn3d)
-        drawPoints (roadPoints, '*b')
+        drawPoints (roadPoints, 0, '*b')
     end
     
+    %%
     for step=1:Constants.NUM_OF_STEPS
         i = min(step,Constants.NUM_OF_CAMERA_HISTORY);
         [f, px, py, mx, my, s] = getInternalParameters();    

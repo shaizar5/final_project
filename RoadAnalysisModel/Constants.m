@@ -9,7 +9,8 @@ classdef Constants
         MIN_HEIGHT_ABOVE_ROAD = 2;
         ANGLE_OF_VIEW = 50;
         CAMERA_HEIGHT = 130;
-        CAMERA_ROTATION_IN_DEGREES = 0;
+        CAMERA_ROTATION_HORIZON_IN_DEGREES = 0;
+        CAMERA_ROTATION_YAW_IN_DEGREES = 0;
         STEP_SIZE = 150;
         NUM_OF_POINT_TO_GENERATE = 500;
         NUM_OF_CAMERA_HISTORY = 2;
@@ -42,5 +43,7 @@ classdef Constants
         drawPointsIn2dFigures = true;
         draw3dPointsOn2dPlane = true;
         drawPointsIn3d = true;
+        drawPointsIndexes2d = false
+        drawPointsIndex3d = false
     end  
 end

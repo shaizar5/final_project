@@ -1,5 +1,5 @@
-function [actualRoadPoints3d, roadPoints2d, indices] = project3dPointsToPlane(P, roadPoint, planeBoundries)
-    roadPoint(4,:)=1;
+function [actualRoadPoints3d, roadPoints2d, indices] = project3dPointsToPlane(P, roadPoint, planeBoundries, Ct)
+    roadPoint(4,:)=1
     tmp = P*roadPoint;
     roadPoints2d = [tmp(1,:)./tmp(3,:); tmp(2,:)./tmp(3,:)];
     
@@ -15,7 +15,8 @@ function [actualRoadPoints3d, roadPoints2d, indices] = project3dPointsToPlane(P,
     indices = [];
     for i=1:s(2)
         if (roadPoints2d(1,i) >= left(1) && roadPoints2d(1,i) <= right(1) ...
-            && roadPoints2d(2,i) >= bottom(2) && roadPoints2d(2,i) <= top(2))
+            && roadPoints2d(2,i) >= bottom(2) && roadPoints2d(2,i) <= top(2) ...
+            && roadPoint(3,i)>Ct(3))
             tmp(:,counter)=roadPoints2d(:,i);
             indices(counter) = i;
             counter = counter+1;
