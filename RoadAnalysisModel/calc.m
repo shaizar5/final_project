@@ -1,5 +1,5 @@
 function [roadPointsOnImagePlane, roadPoints2d, actualPointsIndices] = calc(roadPoints, totalNumOfPoints, planeBoundries, P, currCt, i,R, f)
-    [roadPointsOnImagePlane,roadPoints2d,actualPointsIndices] =featuresPoints(roadPoints, planeBoundries, P, currCt, R, f,i);
+    [roadPointsOnImagePlane,roadPoints2d,actualPointsIndices] = featuresPoints(roadPoints, planeBoundries, P, currCt, R, f,i);
     sizeRoad = size(roadPointsOnImagePlane,2);
     roadPointsOnImagePlane(:, sizeRoad+1:totalNumOfPoints) = 0;
     roadPoints2d(:, sizeRoad+1:totalNumOfPoints) = 0;

@@ -2,7 +2,7 @@ classdef Constants
     properties (Constant = true)
         EDGE = 1000;
         L=200;
-        NUM_OF_STEPS = 2;
+        NUM_OF_STEPS = 5;
         ROAD_WIDTH = 200;
         ROAD_DISTANCE = 1000;
         ABOVE_ROAD_HEIGHT = 200;
@@ -13,9 +13,21 @@ classdef Constants
         STEP_SIZE = 50;
         NUM_OF_POINT_TO_GENERATE = 100;
         NUM_OF_CAMERA_HISTORY = 2;
-        DISPARITY_THRESHOLD=5;
-
-        %mistake variables:
+ 
+        %disparity constants:
+        MIN_DISPARITY_THRESHOLD = 5;
+        MAX_DISPARITY_THRESHOLD = 50;
+        
+        %walking cane constants:
+        SHOW_WALKING_CANE = true;
+        WALKING_CANE_ON_RIGHT_HAND = 1;
+        CANE_DISTANCE_FROM_BODY_CENTER = 20;
+        CANE_RADIUS = 2;
+        CANE_DENSITY = 50;
+        CANE_END_POINT_DISTANCE = 30;
+        CANE_MOVEMENT = 5;
+        
+        %mistake variables constants:
         MIN_STEP_SIZE_MISTAKE = 0;
         MAX_STEP_SIZE_MISTAKE = 0;
         MIN_CAMERA_HEIGHT_MISTAKE = 0;
@@ -25,7 +37,7 @@ classdef Constants
         
 		NUM_OF_SHAPES = 4;
         FRAMES_PER_SECOND = 10;
-        AVERAGE_BLIND_MAN_SPEED = 40; % 0.4 m/s
+        AVERAGE_BLIND_MAN_SPEED = 100; % 0.4 m/s
 		
         %draw
         drawRoad = true;
@@ -36,7 +48,8 @@ classdef Constants
         drawClassification = false;
         drawEpipole = true;
         drawEpipolarLines = false;
-        drawDisparity = false;
+        drawDisparity2d = false;
+        drawDisparity3d = false;
         drawDisparityClassification = false;
         drawPointsDistance = false;
         drawPointsIn2dFigures = false;

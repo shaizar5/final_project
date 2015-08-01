@@ -28,7 +28,6 @@ function planeBoundries = calcFOV(Ct, focalLength, principlePoint, opticalAxis)
     planeLeftTop = [edgeLeft(1),edgeTop(2),edgeTop(3)]';
     planeRightTop = [edgeRight(1),edgeTop(2),edgeTop(3)]';
     
-    
     u1 = planeLeftBottom-Ct;
     u2 = planeRightBottom-Ct;
     u3 = planeLeftTop-Ct;
@@ -47,7 +46,7 @@ function planeBoundries = calcFOV(Ct, focalLength, principlePoint, opticalAxis)
     if (XZleftTop(3) > Constants.ROAD_DISTANCE);
         XZleftTop = tmp;
     end
-    %XZleftTop = lineAndPlaneIntersection(XZplane, Ct, Ct+50*u3);
+    
     if (u4(3) >= 0)
         XZrightTop = Ct + 10*u4;
     else
@@ -57,7 +56,6 @@ function planeBoundries = calcFOV(Ct, focalLength, principlePoint, opticalAxis)
     if (XZrightTop(3) > Constants.ROAD_DISTANCE)
         XZrightTop = tmp;
     end
-    %XZrightTop = lineAndPlaneIntersection(XZplane, Ct, Ct+50*u4);
     
     drawFOVplane(Ct,XZleftBottom,XZrightBottom,XZleftTop,XZrightTop);
 
@@ -92,18 +90,14 @@ function drawFOVplane(Ct, XZleftBottom,XZrightBottom,XZleftTop,XZrightTop)
     end
 
     if (Constants.drawFOVarea)
-        
         drawFOVarea([Ct'; XZrightTop(1), XZrightTop(2) ,  maxZ ; XZleftTop(1), XZleftTop(2),  maxZ]);
-        drawFOVarea([ Ct'; bottomLeft; topLeft; XZleftTop(1), XZleftTop(2),  maxZ ]);
+        drawFOVarea([Ct'; bottomLeft; topLeft; XZleftTop(1), XZleftTop(2),  maxZ]);
         drawFOVarea([Ct'; bottomRight; topRight; XZrightTop(1), XZrightTop(2) ,  maxZ]);
-        drawFOVarea([Ct'; bottomLeft; bottomRight]);
-        
-        %drawFOVarea(Ct, bottomLeft, bottomRight);
+        drawFOVarea([Ct'; bottomLeft; bottomRight]);        
     end
 end
 
 function drawFOVarea(FovArea)
-    
     fill3 (FovArea(:,1),FovArea(:,2),FovArea(:,3),'b')
     alpha(0.2)
 end

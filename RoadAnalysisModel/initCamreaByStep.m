@@ -11,5 +11,5 @@ function [R, Ct] = initCamreaByStep(step)
     cameraHeightNoise = floor(Constants.MIN_CAMERA_HEIGHT_MISTAKE + (Constants.MAX_CAMERA_HEIGHT_MISTAKE-Constants.MIN_CAMERA_HEIGHT_MISTAKE+1)*rand(1));
     cameraHeightWithNoise = Constants.CAMERA_HEIGHT + cameraHeightNoise;
     
-	Ct = [0,Constants.CAMERA_HEIGHT,(step-1)*stepSizeWithNoise*(1/Constants.FRAMES_PER_SECOND)]'; 
+	Ct = [0,cameraHeightWithNoise,(step-1)*stepSizeWithNoise*(1/Constants.FRAMES_PER_SECOND)]'; 
 end

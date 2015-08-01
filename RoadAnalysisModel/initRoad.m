@@ -27,15 +27,11 @@ switch mode
             aboveRoadPointsSquare = generateSquare(100/(Constants.NUM_OF_SHAPES+1),location,20);
             roadPoints = [roadPoints,aboveRoadPointsSquare];
         end
-        %drawPoints(roadPoints, '*m');
-        totalNumOfPoints =130;
+        totalNumOfPoints =130; %TODO:: check this 130
         
     otherwise
         warning('Error using initRoad')
 end
-    if (Constants.drawRoad)
-        drawRoad()
-    end
 end
 
 function location = generateLocationInRange()
@@ -69,19 +65,4 @@ function points = generatePoints(numOfPoints)
        points(2,i)= height*rand(1);
        points(3,i)= distance*rand(1);
     end
-end
-
-function drawRoad()
-    roadRight = Constants.ROAD_WIDTH/2;
-    roadLeft  = -roadRight;
-    roadBottom = 0;
-    roadTop = Constants.ROAD_DISTANCE;
-    
-    x1 = [roadLeft,0,roadBottom;...
-          roadRight,0,roadBottom;...
-          roadRight,0,roadTop;...
-          roadLeft,0,roadTop];
-
-    fill3 (x1(:,1),x1(:,2),x1(:,3),1)
-    alpha(0.3)
 end

@@ -5,6 +5,10 @@ function roadAnalysisModel()
     [Ct,projectionMatrixes,roadPointsOnImagePlane,roadPoints2d,actualIndices] = initDataMembers(totalNumOfPoints);
     pause;
     
+    if (Constants.drawRoad)
+        drawRoad()
+    end
+    
     if (Constants.drawPointsIn3d)
         drawPoints (roadPoints, '*b')
     end
@@ -28,6 +32,8 @@ function roadAnalysisModel()
         projectionMatrixes(:,:,i) = ProjectionMatrix(R,currCt,f,px,py,mx,my,s);
         [roadPointsOnImagePlane(:,:,i), roadPoints2d(:,:,i), actualIndices(:,i)] = calc(roadPoints,totalNumOfPoints, planeBoundries, projectionMatrixes(:,:,i), currCt, i,R, f);        
        
+        walkingCane(currCt,step);
+        
         if (i<Constants.NUM_OF_CAMERA_HISTORY)
              pause;
             continue   
