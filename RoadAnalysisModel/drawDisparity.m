@@ -1,20 +1,12 @@
 function drawDisparity(disparity, roadPoints,matchedPointsLeft, matchedPointsRight, matchingIndices)
-    if (Constants.drawDisparity)
+    if (Constants.drawDisparity2d)
         draw2dDisparity(disparity, matchedPointsLeft,2);
         draw2dDisparity(disparity, matchedPointsRight,3);
-        draw3dDisparity(disparity, roadPoints, matchingIndices);
-        %drawRadius(Ct)
     end
-end
-
-function drawRadius()
-    figure(1)
-    xgv = linspace(-200,200,1000);
-    ygv = linspace(-200,200,1000);
     
-    [X,Y] = meshgrid(xgv,ygv);
-    Z = (4 - X.*2 - Y.*2);
-    surf(X,Y,Z)
+    if (Constants.drawDisparity3d)
+        draw3dDisparity(disparity, roadPoints, matchingIndices);
+    end
 end
 
 function draw2dDisparity(disparity, matchedPointsRight, fig)
@@ -27,13 +19,12 @@ function draw2dDisparity(disparity, matchedPointsRight, fig)
 end
 
 function draw3dDisparity(disparity, roadPoints, matchingIndices)
-
     figure(1)
     len = size(disparity,2);
     for i=1:len
         index = matchingIndices(i);
         p = roadPoints(:,index);
-        s = '';%num2str(index);
-        text(p(1),p(2)+3,p(3),strcat(strcat(strcat('\fontsize{12} \color{blue}',s),'\fontsize{8}'),num2str(disparity(i))))
+        %s = '';
+        text(p(1),p(2)+3,p(3),strcat(strcat('\fontsize{12} \color{blue}','\fontsize{8}'),num2str(disparity(i))))
     end
 end

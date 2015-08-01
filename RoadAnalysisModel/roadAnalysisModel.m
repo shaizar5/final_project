@@ -37,8 +37,11 @@ function roadAnalysisModel()
         [matchedPointsLeft, matchedPointsRight, matchingIndices] = epipolarLines(projectionMatrixes, Ct, R, roadPoints2d, actualIndices);
         disparity = calcDisparity(matchedPointsLeft, matchedPointsRight);
         drawDisparity(disparity, roadPoints, matchedPointsLeft, matchedPointsRight, matchingIndices);
-        disparityClassification(roadPoints,matchingIndices, disparity);
+        classifiedPoints = disparityClassification(roadPoints,matchingIndices, disparity);
         
+        if (Constants.drawDisparityClassification)
+            drawPoints (classifiedPoints, 'og')
+        end
         if (strcmp(runMode,'disparity'))
             draw3dDisparityVolume(disparity, roadPoints, matchingIndices);
         end
