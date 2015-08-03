@@ -1,6 +1,7 @@
 function roadAnalysisModel()
 %%
     runMode = 'road_points';
+    
     initialFiguresState(runMode);
     [roadPoints, totalNumOfPoints] = initRoad(runMode);
     [Ct,projectionMatrixes,roadPointsOnImagePlane,roadPoints2d,actualIndices] = initDataMembers(totalNumOfPoints);
@@ -48,6 +49,7 @@ function roadAnalysisModel()
         %%
         % Tracking - used as input to all modules 
         [matchedPointsLeft, matchedPointsRight, matchingIndices] = findMatchingPoints(roadPoints2d, actualIndices);
+        
         %%
         % Dynamic Analysis module
         epipolarLines(roadPoints2d, matchedPointsLeft, matchedPointsRight);
@@ -56,15 +58,7 @@ function roadAnalysisModel()
         P2_estimation(matchedPointsLeft, matchedPointsRight, K);
         %%
         % Disaprity calculator
-        disparity = calcDisparity(matchedPointsLeft, matchedPointsRight);
-        drawDisparity(disparity, roadPoints, matchedPointsLeft, matchedPointsRight, matchingIndices);
-        classifiedPoints = disparityClassification(roadPoints,matchingIndices, disparity);
-        
-        if (Constants.drawDisparityClassification)
-            drawPoints (classifiedPoints, 'og')
-        end
-        drawDisparity(disparity, roadPoints, matchedPointsRight, matchingIndices, Ct(:,2));
-        disparityClassification(roadPoints,matchingIndices, disparity);
+        disparityMain(roadPoints, matchedPointsLeft, matchedPointsRight, matchingIndices);
         %%
         classifyPoints(roadPointsOnImagePlane,actualIndices,Ct,i);
         if (strcmp(runMode,'disparity'))
