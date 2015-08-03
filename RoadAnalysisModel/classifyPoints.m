@@ -25,7 +25,7 @@ function classifyPoints(roadPointsOnImagePlane,actualIndices,Ct,i)
         if (X(2) < 1.0e-05)
            plot3(X(1),X(2),X(3),'om')
         else
-           plot3(X(1),X(2),X(3),'or')
+           plot3(X(1),X(2),X(3),'og')
         end
             %plot3( [Ct(1,1) X1(1)], [Ct(2,1)  X1(2)], [Ct(3,1)  X1(3)], '-k')
             %plot3( [Ct(1,2) X2(1)], [Ct(2,2)  X2(2)], [Ct(3,2)  X2(3)], '-k')

@@ -1,4 +1,4 @@
-function P = ProjectionMatrix(R, Ct, f, px, py, mx, my, s )
+function [P, K] = ProjectionMatrix(R, Ct, f, px, py, mx, my, s )
 % calculates the projection matrix given the internal and external 
 % camera parameters 
 % 

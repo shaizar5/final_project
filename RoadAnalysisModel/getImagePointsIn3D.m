@@ -28,7 +28,7 @@ end
 function drawIntersectionPoints(actualRoadPoints3d, Ct)
     figure(1)
     pointsLength = size(actualRoadPoints3d);
-    if (pointsLength(2)<=1)
+    if (pointsLength(2)<1)
         return
     end
     for i=1:pointsLength(2)
