@@ -1,18 +1,24 @@
-function [matchedPointsLeft, matchedPointsRight, matchingIndices] = epipolarLines(projectionMatrixes, Ct, R, roadPoints2d, actualIndices)
-    [matchedPointsLeft, matchedPointsRight, matchingIndices] = findMatchingPoints(roadPoints2d, actualIndices);
+function epipolarLines(roadPoints2d, matchedPointsLeft, matchedPointsRight)
 
     matchPointSize = size(matchedPointsLeft);
     if (matchPointSize(1)<8)
         return
     end
-    F = estimateFundamentalMatrix(matchedPointsLeft, matchedPointsRight, 'Method', 'RANSAC', 'NumTrials', 10000, 'DistanceThreshold', 0.1, 'Confidence', 99.99);
-    
-    el = findEpipol(F, matchedPointsLeft,2);
-    er = findEpipol(F', matchedPointsRight,3);
+    F = estimateFundamentalMatrix(matchedPointsLeft, matchedPointsRight, 'Method', 'RANSAC', 'NumTrials', 10000, 'DistanceThreshold', 0.1, 'Confidence', 99.99)
+    %tform = estimateGeometricTransform(matchedPointsLeft,matchedPointsRight,'similar');
+    %tform.T
+    er = findEpipol(F, matchedPointsLeft,'left')
+    el = findEpipol(F', matchedPointsRight,'right')
 
     if (Constants.drawEpipolarLines)
         drawEpipolarLines(roadPoints2d(:,:,1), el,2);
         drawEpipolarLines(roadPoints2d(:,:,2), er,3);
+    end
+    if (Constants.drawEpipole)
+        figure(2)
+        plot(el(1),el(2), 'g*')
+        figure(3)
+        plot(er(1),er(2), 'g*')
     end
   %{
     f=50;
@@ -23,40 +29,20 @@ function [matchedPointsLeft, matchedPointsRight, matchingIndices] = epipolarLine
     %}
 end
 
-function epipol = findEpipol(F, matchedPoints,fig)
+function epipol = findEpipol(F, matchedPoints,side)
     x1 = [matchedPoints(1,:),1];
     x2 = [matchedPoints(2,:),1];
-    l1 = F*x1';
-    l2 = F*x2';
-    epipol = cross(l1,l2);
+    if (strcmp(side,'left'))
+        l1 = F*x1';
+        l2 = F*x2';
+        epipol = cross(l1,l2)
+    else
+        l1 = x1*F;
+        l2 = x2*F;
+        epipol = cross(l1,l2)'
+    end
+    
     epipol = Utilities.nonHomogeneousCoords(epipol);
-    if (Constants.drawEpipole)
-        figure(fig)
-        plot(epipol(1),epipol(2), 'g*')
-    end
+    
 end
 
-function [matchedPointsLeft, matchedPointsRight, matchingIndices] = findMatchingPoints(roadPoints2d, actualIndices)
-    leftPoints = roadPoints2d(:,:,1);
-    rightPoints = roadPoints2d(:,:,2);
-    
-    iRight = actualIndices(:,2);
-    iLeft = actualIndices(:,1);
-    
-    matchedPointsLeft = zeros(1,2);
-    matchedPointsRight = zeros(1,2);
-    matchingIndices = [];
-    counter=1;
-    len = sum(iRight~=0);
-
-    for j=1:len
-        currIndex = find(iLeft==iRight(j));
-        if (size(currIndex,1)==0)
-            continue
-        end
-        matchedPointsLeft(counter,:) = leftPoints(:, currIndex)';
-        matchedPointsRight(counter,:) = rightPoints(:, j)';
-        matchingIndices(counter) = iRight(j);
-        counter = counter+1;
-    end
-end

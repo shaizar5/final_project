@@ -2,16 +2,17 @@ classdef Constants
     properties (Constant = true)
         EDGE = 1000;
         L=200;
-        NUM_OF_STEPS = 5;
+        NUM_OF_STEPS = 2;
         ROAD_WIDTH = 200;
         ROAD_DISTANCE = 1000;
         ABOVE_ROAD_HEIGHT = 200;
         MIN_HEIGHT_ABOVE_ROAD = 2;
         ANGLE_OF_VIEW = 50;
         CAMERA_HEIGHT = 130;
-        CAMERA_ROTATION_IN_DEGREES = 0;
-        STEP_SIZE = 50;
-        NUM_OF_POINT_TO_GENERATE = 100;
+        CAMERA_ROTATION_HORIZON_IN_DEGREES = 0;
+        CAMERA_ROTATION_YAW_IN_DEGREES = 0;
+        STEP_SIZE = 150;
+        NUM_OF_POINT_TO_GENERATE = 500;
         NUM_OF_CAMERA_HISTORY = 2;
  
         %disparity constants:
@@ -35,7 +36,7 @@ classdef Constants
         MIN_CAMERA_ROTATION_IN_DEGREES_MISTAKE = 0;
         MAX_CAMERA_ROTATION_IN_DEGREES_MISTAKE = 0;
         
-		NUM_OF_SHAPES = 4;
+		NUM_OF_SHAPES = 3;
         FRAMES_PER_SECOND = 10;
         AVERAGE_BLIND_MAN_SPEED = 100; % 0.4 m/s
 		
@@ -43,7 +44,7 @@ classdef Constants
         drawRoad = true;
         drawFOVarea = false;
         drawFOVplane = false;
-        drawCameraPlane = false;
+        drawCameraPlane = true;
         drawCameraRoadIntersectionPoints = false;
         drawClassification = false;
         drawEpipole = true;
@@ -52,9 +53,11 @@ classdef Constants
         drawDisparity3d = false;
         drawDisparityClassification = false;
         drawPointsDistance = false;
-        drawPointsIn2dFigures = false;
-        draw3dPointsOn2dPlane = false;
-        drawPointsIn3d = false;
+        drawPointsIn2dFigures = true;
+        draw3dPointsOn2dPlane = true;
+        drawPointsIn3d = true;
         drawFovBoundries = false;
+        drawPointsIndexes2d = false
+        drawPointsIndex3d = false
     end  
 end
