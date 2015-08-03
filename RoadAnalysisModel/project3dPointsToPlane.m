@@ -1,5 +1,5 @@
 function [actualRoadPoints3d, roadPoints2d, indices] = project3dPointsToPlane(P, roadPoint, planeBoundries, Ct)
-    roadPoint(4,:)=1
+    roadPoint(4,:)=1;
     tmp = P*roadPoint;
     roadPoints2d = [tmp(1,:)./tmp(3,:); tmp(2,:)./tmp(3,:)];
     

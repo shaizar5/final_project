@@ -1,14 +1,14 @@
 function epipolarLines(roadPoints2d, matchedPointsLeft, matchedPointsRight)
-
+'s'
     matchPointSize = size(matchedPointsLeft);
     if (matchPointSize(1)<8)
         return
     end
-    F = estimateFundamentalMatrix(matchedPointsLeft, matchedPointsRight, 'Method', 'RANSAC', 'NumTrials', 10000, 'DistanceThreshold', 0.1, 'Confidence', 99.99)
+    F = estimateFundamentalMatrix(matchedPointsLeft, matchedPointsRight, 'Method', 'RANSAC', 'NumTrials', 10000, 'DistanceThreshold', 0.1, 'Confidence', 99.99);
     %tform = estimateGeometricTransform(matchedPointsLeft,matchedPointsRight,'similar');
     %tform.T
-    er = findEpipol(F, matchedPointsLeft,'left')
-    el = findEpipol(F', matchedPointsRight,'right')
+    er = findEpipol(F, matchedPointsLeft,'left');
+    el = findEpipol(F', matchedPointsRight,'right');
 
     if (Constants.drawEpipolarLines)
         drawEpipolarLines(roadPoints2d(:,:,1), el,2);
@@ -35,11 +35,11 @@ function epipol = findEpipol(F, matchedPoints,side)
     if (strcmp(side,'left'))
         l1 = F*x1';
         l2 = F*x2';
-        epipol = cross(l1,l2)
+        epipol = cross(l1,l2);
     else
         l1 = x1*F;
         l2 = x2*F;
-        epipol = cross(l1,l2)'
+        epipol = cross(l1,l2)';
     end
     
     epipol = Utilities.nonHomogeneousCoords(epipol);
