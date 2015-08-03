@@ -1,9 +1,18 @@
 function [roadPoints, totalNumOfPoints] = initRoad(mode)
 switch mode
+    case 'one_on_road_point'
+        totalNumOfPoints = 1;
+        roadPoints = [20;0;400];
     case 'random' 
         totalNumOfPoints = Constants.NUM_OF_POINT_TO_GENERATE;
         roadPoints = generatePoints(totalNumOfPoints);
         %drawPoints(roadPoints, '*b'); 
+    case 'on_above'
+        totalNumOfPoints = Constants.NUM_OF_POINT_TO_GENERATE;
+        roadPoints = generateOnAndAboveRoad(totalNumOfPoints);
+	case 'road_points'
+        totalNumOfPoints = Constants.NUM_OF_POINT_TO_GENERATE;
+        roadPoints = generateOnAbove(totalNumOfPoints,0);
     case 'disparity'
         roadRight = Constants.ROAD_WIDTH/2;
         roadLeft  = -roadRight;
@@ -21,13 +30,18 @@ switch mode
             end
         end
     case 'shapes'
-        roadPoints = generatePoints(100/(Constants.NUM_OF_SHAPES+1));
+        roadPoints = generatePoints(Constants.NUM_OF_POINT_TO_GENERATE/(Constants.NUM_OF_SHAPES+1));
         for i=1:Constants.NUM_OF_SHAPES
             location = generateLocationInRange();
-            aboveRoadPointsSquare = generateSquare(100/(Constants.NUM_OF_SHAPES+1),location,20);
+            aboveRoadPointsSquare = generateSquare(Constants.NUM_OF_POINT_TO_GENERATE/(Constants.NUM_OF_SHAPES+1),location,20);
             roadPoints = [roadPoints,aboveRoadPointsSquare];
         end
+<<<<<<< HEAD
         totalNumOfPoints =130; %TODO:: check this 130
+=======
+        %drawPoints(roadPoints, '*m');
+        totalNumOfPoints =Constants.NUM_OF_POINT_TO_GENERATE;
+>>>>>>> a01a1432d2e483af91733308745b3a91c89f5e92
         
     otherwise
         warning('Error using initRoad')
@@ -65,4 +79,41 @@ function points = generatePoints(numOfPoints)
        points(2,i)= height*rand(1);
        points(3,i)= distance*rand(1);
     end
+<<<<<<< HEAD
+=======
+end
+
+function points = generateOnAndAboveRoad(numOfPoints) 
+    onRoadPoints = generateOnAbove(numOfPoints/2,0);
+    aboveRoadPoints = generateOnAbove(numOfPoints/2,1);
+    points = [onRoadPoints, aboveRoadPoints];
+end
+
+function points = generateOnAbove(numOfPoints,isAboveRoad) 
+    points = zeros(3,numOfPoints);
+    distance = Constants.ROAD_DISTANCE;
+    height = Constants.ABOVE_ROAD_HEIGHT;
+    width = Constants.ROAD_WIDTH;
+    
+    for i=1:numOfPoints
+       points(1,i)= width*rand(1) + (-width/2);
+       points(2,i)= (height*rand(1) + Constants.MIN_HEIGHT_ABOVE_ROAD)*isAboveRoad;
+       points(3,i)= distance*rand(1);
+    end
+end
+
+function drawRoad()
+    roadRight = Constants.ROAD_WIDTH/2;
+    roadLeft  = -roadRight;
+    roadBottom = 0;
+    roadTop = Constants.ROAD_DISTANCE;
+    
+    x1 = [roadLeft,0,roadBottom;...
+          roadRight,0,roadBottom;...
+          roadRight,0,roadTop;...
+          roadLeft,0,roadTop];
+
+    fill3 (x1(:,1),x1(:,2),x1(:,3),1)
+    alpha(0.3)
+>>>>>>> a01a1432d2e483af91733308745b3a91c89f5e92
 end

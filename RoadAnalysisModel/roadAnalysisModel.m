@@ -1,5 +1,6 @@
 function roadAnalysisModel()
-    runMode = 'random';
+    %%
+    runMode = 'road_points';
     initialFiguresState(runMode);
     [roadPoints, totalNumOfPoints] = initRoad(runMode);
     [Ct,projectionMatrixes,roadPointsOnImagePlane,roadPoints2d,actualIndices] = initDataMembers(totalNumOfPoints);
@@ -10,6 +11,7 @@ function roadAnalysisModel()
     end
     
     if (Constants.drawPointsIn3d)
+<<<<<<< HEAD
         drawPoints (roadPoints, '*b')
     end
     
@@ -19,6 +21,13 @@ function roadAnalysisModel()
     end
         
     for step=1:numOfSteps
+=======
+        drawPoints (roadPoints, 0, '*b')
+    end
+    
+    %%
+    for step=1:Constants.NUM_OF_STEPS
+>>>>>>> a01a1432d2e483af91733308745b3a91c89f5e92
         i = min(step,Constants.NUM_OF_CAMERA_HISTORY);
         [f, px, py, mx, my, s] = getInternalParameters();    
         [R, currCt] = initCamreaByStep(step);
@@ -29,7 +38,7 @@ function roadAnalysisModel()
         planeBoundries = calcFOV(Ct(:,i), f, intersectionPoints, R(3,:)');
         
         drawCameraPlane(planeBoundries);
-        projectionMatrixes(:,:,i) = ProjectionMatrix(R,currCt,f,px,py,mx,my,s);
+        [projectionMatrixes(:,:,i), K] = ProjectionMatrix(R,currCt,f,px,py,mx,my,s);
         [roadPointsOnImagePlane(:,:,i), roadPoints2d(:,:,i), actualIndices(:,i)] = calc(roadPoints,totalNumOfPoints, planeBoundries, projectionMatrixes(:,:,i), currCt, i,R, f);        
        
         walkingCane(currCt,step);
@@ -38,16 +47,32 @@ function roadAnalysisModel()
              pause;
             continue   
         end
-        
-        classifyPoints(roadPointsOnImagePlane,actualIndices,Ct,i);        
-        [matchedPointsLeft, matchedPointsRight, matchingIndices] = epipolarLines(projectionMatrixes, Ct, R, roadPoints2d, actualIndices);
+       
+        %%
+        % Tracking - used as input to all modules 
+        [matchedPointsLeft, matchedPointsRight, matchingIndices] = findMatchingPoints(roadPoints2d, actualIndices);
+        %%
+        % Dynamic Analysis module
+        epipolarLines(roadPoints2d, matchedPointsLeft, matchedPointsRight);
+        %%
+        % P2 estimation module
+        P2_estimation(matchedPointsLeft, matchedPointsRight, K);
+        %%
+        % Disaprity calculator
         disparity = calcDisparity(matchedPointsLeft, matchedPointsRight);
+<<<<<<< HEAD
         drawDisparity(disparity, roadPoints, matchedPointsLeft, matchedPointsRight, matchingIndices);
         classifiedPoints = disparityClassification(roadPoints,matchingIndices, disparity);
         
         if (Constants.drawDisparityClassification)
             drawPoints (classifiedPoints, 'og')
         end
+=======
+        drawDisparity(disparity, roadPoints, matchedPointsRight, matchingIndices, Ct(:,2));
+        disparityClassification(roadPoints,matchingIndices, disparity);
+        %%
+        classifyPoints(roadPointsOnImagePlane,actualIndices,Ct,i);
+>>>>>>> a01a1432d2e483af91733308745b3a91c89f5e92
         if (strcmp(runMode,'disparity'))
             draw3dDisparityVolume(disparity, roadPoints, matchingIndices);
         end
