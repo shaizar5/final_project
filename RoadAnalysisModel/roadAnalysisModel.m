@@ -1,5 +1,5 @@
 function roadAnalysisModel()
-    %%
+%%
     runMode = 'road_points';
     initialFiguresState(runMode);
     [roadPoints, totalNumOfPoints] = initRoad(runMode);
@@ -11,8 +11,7 @@ function roadAnalysisModel()
     end
     
     if (Constants.drawPointsIn3d)
-<<<<<<< HEAD
-        drawPoints (roadPoints, '*b')
+        drawPoints (roadPoints, [] , '*b')
     end
     
     numOfSteps=Constants.NUM_OF_STEPS;
@@ -21,13 +20,11 @@ function roadAnalysisModel()
     end
         
     for step=1:numOfSteps
-=======
         drawPoints (roadPoints, 0, '*b')
     end
     
     %%
     for step=1:Constants.NUM_OF_STEPS
->>>>>>> a01a1432d2e483af91733308745b3a91c89f5e92
         i = min(step,Constants.NUM_OF_CAMERA_HISTORY);
         [f, px, py, mx, my, s] = getInternalParameters();    
         [R, currCt] = initCamreaByStep(step);
@@ -60,19 +57,16 @@ function roadAnalysisModel()
         %%
         % Disaprity calculator
         disparity = calcDisparity(matchedPointsLeft, matchedPointsRight);
-<<<<<<< HEAD
         drawDisparity(disparity, roadPoints, matchedPointsLeft, matchedPointsRight, matchingIndices);
         classifiedPoints = disparityClassification(roadPoints,matchingIndices, disparity);
         
         if (Constants.drawDisparityClassification)
             drawPoints (classifiedPoints, 'og')
         end
-=======
         drawDisparity(disparity, roadPoints, matchedPointsRight, matchingIndices, Ct(:,2));
         disparityClassification(roadPoints,matchingIndices, disparity);
         %%
         classifyPoints(roadPointsOnImagePlane,actualIndices,Ct,i);
->>>>>>> a01a1432d2e483af91733308745b3a91c89f5e92
         if (strcmp(runMode,'disparity'))
             draw3dDisparityVolume(disparity, roadPoints, matchingIndices);
         end

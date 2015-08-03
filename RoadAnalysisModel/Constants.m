@@ -2,7 +2,7 @@ classdef Constants
     properties (Constant = true)
         EDGE = 1000;
         L=200;
-        NUM_OF_STEPS = 5;
+        NUM_OF_STEPS = 2;
         ROAD_WIDTH = 200;
         ROAD_DISTANCE = 1000;
         ABOVE_ROAD_HEIGHT = 200;
@@ -44,7 +44,7 @@ classdef Constants
         drawRoad = true;
         drawFOVarea = false;
         drawFOVplane = false;
-        drawCameraPlane = false;
+        drawCameraPlane = true;
         drawCameraRoadIntersectionPoints = false;
         drawClassification = false;
         drawEpipole = true;
@@ -53,17 +53,11 @@ classdef Constants
         drawDisparity3d = false;
         drawDisparityClassification = false;
         drawPointsDistance = false;
-<<<<<<< HEAD
-        drawPointsIn2dFigures = false;
-        draw3dPointsOn2dPlane = false;
-        drawPointsIn3d = false;
-        drawFovBoundries = false;
-=======
         drawPointsIn2dFigures = true;
         draw3dPointsOn2dPlane = true;
         drawPointsIn3d = true;
+        drawFovBoundries = false;
         drawPointsIndexes2d = false
         drawPointsIndex3d = false
->>>>>>> a01a1432d2e483af91733308745b3a91c89f5e92
     end  
 end
