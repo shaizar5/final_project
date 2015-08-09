@@ -12,7 +12,7 @@ classdef Constants
         CAMERA_ROTATION_HORIZON_IN_DEGREES = 0;
         CAMERA_ROTATION_YAW_IN_DEGREES = 0;
         STEP_SIZE = 150;
-        NUM_OF_POINT_TO_GENERATE = 500;
+        NUM_OF_POINT_TO_GENERATE = 200;
         NUM_OF_CAMERA_HISTORY = 2;
  
         %disparity constants:
@@ -38,7 +38,7 @@ classdef Constants
         
 		NUM_OF_SHAPES = 3;
         FRAMES_PER_SECOND = 10;
-        AVERAGE_BLIND_MAN_SPEED = 100; % 0.4 m/s
+        AVERAGE_BLIND_MAN_SPEED = 400; % 0.4 m/s
 		
         %draw
         drawRoad = true;
@@ -58,6 +58,6 @@ classdef Constants
         drawPointsIn3d = true;
         drawFovBoundries = false;
         drawPointsIndexes2d = false
-        drawPointsIndex3d = false
+        drawPointsIndex3d = true
     end  
 end

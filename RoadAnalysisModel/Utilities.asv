@@ -28,11 +28,7 @@ classdef Utilities
             dist = sqrt(sum(p3));
         end
         
-        function res = divideMatrixByLastRow(A)
-            res = A(:,:)./[A(3,:); A(3,:); A(3,:)];
-        end
-        
-        function H=computeHdirectly(leftPoints, rightPoints)
+        function computeHdirectly(leftPoints, rightPoints)
             sizeLeft = size(leftPoints);
             sizeRight = size(rightPoints);
             if (sizeLeft(1) ~= sizeRight(1) || sizeLeft(2) ~= sizeRight(2))
@@ -48,15 +44,8 @@ classdef Utilities
             A(2:2:end,:) = Aeven;
             
             [~,~,R] = svd(A);
-            X = R(:,end);
-            H = reshape(X,3,3)';
-        end
-        
-        function error=measureHomographyError(H, left, right)
-            res = H*[left;ones(1,size(left,2))];
-            res = Utilities.divideMatrixByLastRow(res);
-            res = res-[right;ones(1,size(right,2))];
-            error = diag(res'*res);
+            Hvector = R(:,end);
+            H = reshape(Hvector,3,3)';
         end
     end
     

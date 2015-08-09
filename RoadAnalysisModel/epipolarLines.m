@@ -1,5 +1,4 @@
 function epipolarLines(roadPoints2d, matchedPointsLeft, matchedPointsRight)
-'s'
     matchPointSize = size(matchedPointsLeft);
     if (matchPointSize(1)<8)
         return

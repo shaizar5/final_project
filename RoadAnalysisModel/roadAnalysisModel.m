@@ -1,6 +1,6 @@
 function roadAnalysisModel()
 %%
-    runMode = 'road_points';
+    runMode = 'on_above';
     
     initialFiguresState(runMode);
     [roadPoints, totalNumOfPoints] = initRoad(runMode);

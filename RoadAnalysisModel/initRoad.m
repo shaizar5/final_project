@@ -12,7 +12,7 @@ switch mode
         roadPoints = generateOnAndAboveRoad(totalNumOfPoints);
 	case 'road_points'
         totalNumOfPoints = Constants.NUM_OF_POINT_TO_GENERATE;
-        roadPoints = generateOnAbove(totalNumOfPoints,0);
+        roadPoints = generateOnAbove(totalNumOfPoints,0)
     case 'disparity'
         roadRight = Constants.ROAD_WIDTH/2;
         roadLeft  = -roadRight;

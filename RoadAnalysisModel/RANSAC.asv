@@ -10,8 +10,7 @@ end
 error = zeros(1,numOfIteration);
 totalNumOfPoints = size(leftPoints,2);
 bestInNum=0;        % Best fitting H with largest number of inliers
-bestH = zeros(3,3);
-foundOnce=0;
+bestH = zeros(3,3); 
 for i=1:numOfIteration
     % randomly choosing n points
     index = randperm(sizeLeft(2),n);
@@ -25,36 +24,29 @@ for i=1:numOfIteration
     currRight = rightPoints(:,index);
     H = Utilities.computeHdirectly(currLeft, currRight);
     
-    % compute the error between all points
-    error = Utilities.measureHomographyError(H, leftPoints, rightPoints);
+    res = H*[currLeft;ones(1,size(currLeft,2))];
+    res = Utilities.divideMatrixByLastRow(res);
+    res = res-[currRight;ones(1,size(currRight,2))];
+    error = diag(res'*res);
     
     % if point fits with an error smaller than t
     inlierIdx = find(error<=threshDist);
     inlierNum = length(inlierIdx);
     
-    % if the number of elements is > inlierRatio
     if inlierNum>=round(inlierRatio*totalNumOfPoints) && inlierNum>bestInNum
-        % this implies that we may have found a good model
-        % now test how good it is
-        bestInNum = inlierNum;
-        foundOnce=1;
-        currLeft  = leftPoints(:,inlierIdx);
-        currRight = rightPoints(:,inlierIdx);
-        bestH = Utilities.computeHdirectly(currLeft, currRight);
+         bestInNum = inlierNum;
+         parameter1 = (sample(2,2)-sample(2,1))/(sample(1,2)-sample(1,1));
+         parameter2 = sample(2,1)-parameter1*sample(1,1);
+         bestParameter1=parameter1; bestParameter2=parameter2;
     end
+    
     %res = (H*[currLeft(:,1);ones(1,1)]);
     %res = res./res(3);
     %error(i) = norm(res-[currRight(:,1);ones(1,1)]);
 end
-if (foundOnce==0)
-    'error in running RANSAC'
-    return
-end
-bestInNum
-error = Utilities.measureHomographyError(bestH, leftPoints, rightPoints);
-figure(4) ; clf
-axis([1 length(error) min(error) max(error)])
-plot ([1:length(error)], error, '*-')
 
+%figure(4) ; clf
+%axis([1 numOfIteration min(error) max(error)])
+%plot ([1:numOfIteration], error, '*-')
 end
 
