@@ -58,6 +58,10 @@ classdef Utilities
             res = res-[right;ones(1,size(right,2))];
             error = diag(res'*res);
         end
+        
+        function res = doublePrecision(num, precision)
+            res = round(num*(10^(precision)))/(10^(precision)) ;
+        end
     end
     
 end
