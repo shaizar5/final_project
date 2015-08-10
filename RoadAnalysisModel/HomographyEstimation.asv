@@ -7,9 +7,7 @@ if (strcmp(method,'RANSAC'))
     inliersRatio=0.1;
     [H, inliers, outliers, error] = RANSAC(leftPoints, rightPoints, 0, k, numOfIteration, threshDist, inliersRatio);
     
-    if (Constants.HOMOGRAPHY_UNIT_TEST==1)
-        displayHomographyUnitTest(size(leftPoints), matchingIndices, inliers, outliers, error, k, numOfIteration, threshDist);
-    end
+    displayHomographyUnitTest(size(leftPoints), matchingIndices, inliers, outliers, error);
     
 else
     % copmute H directly
@@ -32,8 +30,9 @@ end
 
 end
 
-function displayHomographyUnitTest(sizeLeft, matchingIndices, inliers, outliers, error, k, numOfIteration, threshDist)
-     
+function displayHomographyUnitTest(sizeLeft, matchingIndices, inliers, outliers, error);
+function displayHomographyUnitTest(sizeLeft)
+     = ;
     figure(4) ; clf
     subplot(2,1,1);
     res = zeros(1,length(matchingIndices));
@@ -57,8 +56,8 @@ function displayHomographyUnitTest(sizeLeft, matchingIndices, inliers, outliers,
     axis([1 length(res) min(res) threshDist])
     plot ([1:length(res)], res, '*')
     ylim([0 threshDist])
-    perfectNumOfInliers = length(find(matchingIndices<=Constants.HOMOGRAPHY_UNIT_TEST_ON_ROAD));
-    perfectNumOfOutliers = length(matchingIndices)-perfectNumOfInliers;
+    perfectNumOfInliers = length(find(matchingIndices<=Constants.HOMOGRAPHY_UNIT_TEST_ON_ROAD))
+    perfectNumOfOutliers = length(matchingIndices)-perfectNumOfInliers
     assert(perfectNumOfInliers+perfectNumOfOutliers==length(matchingIndices), 'error in perferct matching')
     str = ['#inliers = ',num2str(length(inliers)),' (actual ',num2str(perfectNumOfInliers) '), #outliers = ',num2str(length(outliers)),' (actual ',num2str(perfectNumOfOutliers) ')'];
     title(str)

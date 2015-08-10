@@ -83,9 +83,11 @@ function points = generateOnAndAboveRoad(numOfPoints)
     onRoadPoints = generateOnAbove(numOfPoints/2,0);
     aboveRoadPoints = generateOnAbove(numOfPoints/2,1);
     if (Constants.HOMOGRAPHY_UNIT_TEST==1)
-        assert((Constants.HOMOGRAPHY_UNIT_TEST_ON_ROAD + Constants.HOMOGRAPHY_UNIT_TEST_ABOVE_ROAD == Constants.NUM_OF_POINT_TO_GENERATE), 'error in HOMOGGRAPHY UNIT TEST')
-        onRoadPoints = generateOnAbove(Constants.HOMOGRAPHY_UNIT_TEST_ON_ROAD,0);
-        aboveRoadPoints = generateOnAbove(Constants.HOMOGRAPHY_UNIT_TEST_ABOVE_ROAD,1);
+        if (Constants.HOMOGRAPHY_UNIT_TEST_ON_ROAD + Constants.HOMOGRAPHY_UNIT_TEST_ABOVE_ROAD ~= Constants.NUM_OF_POINT_TO_GENERATE)
+            assert(
+            return
+        onRoadPoints = generateOnAbove(200,0);
+        aboveRoadPoints = generateOnAbove(300,1);
     end
     points = [onRoadPoints, aboveRoadPoints];
 end

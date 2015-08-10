@@ -1,5 +1,4 @@
-function T = RANSAC(leftPoints, rightPoints, func, n, numOfIteration, threshDist, inlierRatio,  K)
-T = zeros(numOfIteration,1);
+function [bestH, inliers, outliers, error] = RANSAC(leftPoints, rightPoints, func, n, numOfIteration, threshDist, inlierRatio)
 sizeLeft = size(leftPoints);
 sizeRight = size(rightPoints);
 if (sizeLeft(1) ~= sizeRight(1) || sizeLeft(2) ~= sizeRight(2))
@@ -7,7 +6,6 @@ if (sizeLeft(1) ~= sizeRight(1) || sizeLeft(2) ~= sizeRight(2))
     return
 end
 
-error = zeros(1,numOfIteration);
 totalNumOfPoints = size(leftPoints,2);
 bestInNum=0;        % Best fitting H with largest number of inliers
 bestH = zeros(3,3);
@@ -50,11 +48,11 @@ if (foundOnce==0)
     'error in running RANSAC'
     return
 end
-bestInNum
+
 error = Utilities.measureHomographyError(bestH, leftPoints, rightPoints);
-figure(4) ; clf
-axis([1 length(error) min(error) max(error)])
-plot ([1:length(error)], error, '*-')
+inliers = find(error<=threshDist);
+outliers = find(error>threshDist);
+
 
 end
 

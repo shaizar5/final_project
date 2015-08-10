@@ -12,9 +12,14 @@ classdef Constants
         CAMERA_ROTATION_HORIZON_IN_DEGREES = 0;
         CAMERA_ROTATION_YAW_IN_DEGREES = 0;
         STEP_SIZE = 150;
-        NUM_OF_POINT_TO_GENERATE = 200;
+        NUM_OF_POINT_TO_GENERATE = 500;
         NUM_OF_CAMERA_HISTORY = 2;
  
+        % unit tests
+        HOMOGRAPHY_UNIT_TEST = 0;
+        HOMOGRAPHY_UNIT_TEST_ON_ROAD = 350;
+        HOMOGRAPHY_UNIT_TEST_ABOVE_ROAD = 150;
+        
         %disparity constants:
         MIN_DISPARITY_THRESHOLD = 5;
         MAX_DISPARITY_THRESHOLD = 50;
