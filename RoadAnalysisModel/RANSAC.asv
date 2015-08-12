@@ -1,4 +1,4 @@
-function [bestH, inliers, outliers, error] = RANSAC(leftPoints, rightPoints, func, n, numOfIteration, threshDist, inlierRatio)
+function [bestH, inliers, outliers] = RANSAC(leftPoints, rightPoints, func, n, numOfIteration, threshDist, inlierRatio,j)
 sizeLeft = size(leftPoints);
 sizeRight = size(rightPoints);
 if (sizeLeft(1) ~= sizeRight(1) || sizeLeft(2) ~= sizeRight(2))
@@ -48,11 +48,25 @@ if (foundOnce==0)
     'error in running RANSAC'
     return
 end
-
+bestInNum
 error = Utilities.measureHomographyError(bestH, leftPoints, rightPoints);
-inliers = find(error<=threshDist);
-outliers = find(error>threshDist);
+
+inliers = find(error<=threshDist)
+outliers = find(error>threshDist)
 
 
+figure(j+3) ; clf
+subplot(2,1,1);
+axis([1 length(error) min(error) max(error)])
+plot ([1:length(error)], error, '*')
+str = ['#matched points = ',num2str(sizeLeft(2)),', k = ',num2str(n),', #iterations = ',num2str(numOfIteration); ...
+       '#inliers = ',length(inliers), ]
+title(str)
+hold on
+subplot(2,1,2);
+axis([1 length(error) min(error) threshDist])
+plot ([1:length(error)], error, '*')
+ylim([0 threshDist])
+hold on
 end
 

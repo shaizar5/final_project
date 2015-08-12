@@ -15,6 +15,11 @@ classdef Constants
         NUM_OF_POINT_TO_GENERATE = 500;
         NUM_OF_CAMERA_HISTORY = 2;
  
+        % unit tests
+        HOMOGRAPHY_UNIT_TEST = 0;
+        HOMOGRAPHY_UNIT_TEST_ON_ROAD = 350;
+        HOMOGRAPHY_UNIT_TEST_ABOVE_ROAD = 150;
+        
         %disparity constants:
         MIN_DISPARITY_THRESHOLD = 5;
         MAX_DISPARITY_THRESHOLD = 50;
@@ -33,12 +38,14 @@ classdef Constants
         MAX_STEP_SIZE_MISTAKE = 0;
         MIN_CAMERA_HEIGHT_MISTAKE = 0;
         MAX_CAMERA_HEIGHT_MISTAKE = 0;
-        MIN_CAMERA_ROTATION_IN_DEGREES_MISTAKE = 0;
-        MAX_CAMERA_ROTATION_IN_DEGREES_MISTAKE = 0;
+        MIN_CAMERA_ROTATION_HORIZON_IN_DEGREES_MISTAKE = -3;
+        MAX_CAMERA_ROTATION_HORIZON_IN_DEGREES_MISTAKE = 3;
+        MIN_CAMERA_ROTATION_YAW_IN_DEGREES_MISTAKE = 0;
+        MAX_CAMERA_ROTATION_YAW_IN_DEGREES_MISTAKE = 0;
         
 		NUM_OF_SHAPES = 3;
         FRAMES_PER_SECOND = 10;
-        AVERAGE_BLIND_MAN_SPEED = 100; % 0.4 m/s
+        AVERAGE_BLIND_MAN_SPEED = 400; % 0.4 m/s
 		
         %draw
         drawRoad = true;
@@ -58,6 +65,6 @@ classdef Constants
         drawPointsIn3d = true;
         drawFovBoundries = false;
         drawPointsIndexes2d = false
-        drawPointsIndex3d = false
+        drawPointsIndex3d = true
     end  
 end

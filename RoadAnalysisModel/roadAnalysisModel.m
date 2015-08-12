@@ -1,6 +1,6 @@
 function roadAnalysisModel()
 %%
-    runMode = 'road_points';
+    runMode = 'on_above';
     
     initialFiguresState(runMode);
     [roadPoints, totalNumOfPoints] = initRoad(runMode);
@@ -55,7 +55,7 @@ function roadAnalysisModel()
         epipolarLines(roadPoints2d, matchedPointsLeft, matchedPointsRight);
         %%
         % P2 estimation module
-        P2_estimation(matchedPointsLeft, matchedPointsRight, K);
+        P2_estimation(matchedPointsLeft, matchedPointsRight, matchingIndices, K);
         %%
         % Disaprity calculator
         disparityMain(roadPoints, matchedPointsLeft, matchedPointsRight, matchingIndices);
