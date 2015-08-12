@@ -8,33 +8,20 @@ if (strcmp(method,'RANSAC'))
     [H, inliers, outliers, error] = RANSAC(leftPoints, rightPoints, 0, k, numOfIteration, threshDist, inliersRatio);
     
     if (Constants.HOMOGRAPHY_UNIT_TEST==1)
+        assert(Constants.NUM_OF_STEPS==2)
         displayHomographyUnitTest(size(leftPoints), matchingIndices, inliers, outliers, error, k, numOfIteration, threshDist);
     end
     
 else
-    % copmute H directly
-    
+    % copmute H directly    
     H = Utilities.computeHdirectly(leftPoints, rightPoints);
-    %x= H*[leftPoints;ones(1,sizeLeft(2))];
-    %x2 = [x(1,:)./x(3,:) ; x(2,:)./x(3,:) ;x(3,:)./x(3,:) ]
-    %[rightPoints;ones(1,sizeLeft(2))]
-    %H*[leftPoints(:,1);1];
-    
-    
-    % For more info - https://en.wikipedia.org/wiki/Homography_(computer_vision)
-    Hab = (inv(K)*H*K);
-    Hab = Hab./Hab(3,3);
-    tmp = (eye(3)-Hab)*Constants.CAMERA_HEIGHT;
-    t = -round(tmp(:,2));
-    
-    
 end
 
 end
 
 function displayHomographyUnitTest(sizeLeft, matchingIndices, inliers, outliers, error, k, numOfIteration, threshDist)
      
-    figure(4) ; clf
+    figure(100) ; clf
     subplot(2,1,1);
     res = zeros(1,length(matchingIndices));
     res(:) = max(error)*1.2;
@@ -50,7 +37,7 @@ function displayHomographyUnitTest(sizeLeft, matchingIndices, inliers, outliers,
     str = ['#matched points = ',num2str(sizeLeft(2)),' (out of ',num2str(Constants.NUM_OF_POINT_TO_GENERATE),'), k = ',num2str(k),', #iterations = ',num2str(numOfIteration)];
     title(str)
     x = [Constants.HOMOGRAPHY_UNIT_TEST_ON_ROAD, Constants.HOMOGRAPHY_UNIT_TEST_ON_ROAD];
-    y = [0, max(res)]
+    y = [0, max(res)];
     plot(x,y,'-r')
     hold on
     subplot(2,1,2);

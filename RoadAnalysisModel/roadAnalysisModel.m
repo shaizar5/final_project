@@ -1,5 +1,9 @@
 function roadAnalysisModel()
 %%
+% globals
+    global deg
+    deg = Constants.TRANSLATION_VECTOR_DEG;
+%%
     runMode = 'on_above';
     
     initialFiguresState(runMode);
@@ -37,7 +41,7 @@ function roadAnalysisModel()
         
         drawCameraPlane(planeBoundries);
         [projectionMatrixes(:,:,i), K] = ProjectionMatrix(R,currCt,f,px,py,mx,my,s);
-        [roadPointsOnImagePlane(:,:,i), roadPoints2d(:,:,i), actualIndices(:,i)] = calc(roadPoints,totalNumOfPoints, planeBoundries, projectionMatrixes(:,:,i), currCt, i,R, f);        
+        [roadPointsOnImagePlane(:,:,i), roadPoints2d(:,:,i), actualIndices(:,i)] = calc(roadPoints,totalNumOfPoints, planeBoundries, projectionMatrixes(:,:,i), currCt, step,R, f);        
        
         walkingCane(currCt,step);
         
@@ -52,10 +56,10 @@ function roadAnalysisModel()
         
         %%
         % Dynamic Analysis module
-        epipolarLines(roadPoints2d, matchedPointsLeft, matchedPointsRight);
+        foe = epipolarLines(roadPoints2d, matchedPointsLeft, matchedPointsRight,step);
         %%
         % P2 estimation module
-        P2_estimation(matchedPointsLeft, matchedPointsRight, matchingIndices, K);
+        P2_estimation(matchedPointsLeft, matchedPointsRight, matchingIndices, K, foe, step);
         %%
         % Disaprity calculator
         disparityMain(roadPoints, matchedPointsLeft, matchedPointsRight, matchingIndices);

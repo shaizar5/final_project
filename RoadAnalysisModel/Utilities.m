@@ -62,6 +62,31 @@ classdef Utilities
         function res = doublePrecision(num, precision)
             res = round(num*(10^(precision)))/(10^(precision)) ;
         end
+        
+        function R = rotationMatrix(horizon,yaw,roll)
+            Rx = Utilities.rotationX(horizon);
+            Ry = Utilities.rotationY(yaw);
+            Rz = Utilities.rotationZ(roll);
+            R = Rz*Ry*Rx;
+        end
+        
+        function Rx = rotationX(horizon)
+            Rx = [1, 0, 0 ; ...
+                0, cos(horizon), -sin(horizon) ; ...
+                0, sin(horizon), cos(horizon)];
+        end
+        
+        function Ry = rotationY(yaw)
+            Ry = [cos(yaw),  0, -sin(yaw) ; ...
+                0,         1,  0; ...
+                sin(yaw), 0, cos(yaw)];
+        end
+        
+        function Rz = rotationZ(roll)
+            Rz = [cos(roll), -sin(roll), 0 ; ...
+                sin(roll), cos(roll), 0; ...
+                0, 0, 1];
+        end
     end
     
 end
