@@ -78,7 +78,8 @@ clearvars;
         groundDetectorModule(matchedPointsLeft, matchedPointsRight, matchingIndices, step);
         %%
         % Disaprity calculator
-        disparityMain(roadPoints, matchedPointsLeft, matchedPointsRight, matchingIndices);
+        disparity = disparityMain(roadPoints, matchedPointsLeft, matchedPointsRight, matchingIndices);
+        objectClassificationByDisparity(roadPoints, matchedPointsLeft, matchedPointsRight, matchingIndices,disparity);
         %%
         classifyPoints(roadPointsOnImagePlane,actualIndices,Ct,i);
         if (strcmp(runMode,'disparity'))

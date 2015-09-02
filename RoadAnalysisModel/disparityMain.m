@@ -1,4 +1,4 @@
-function disparityMain(roadPoints, matchedPointsLeft, matchedPointsRight, matchingIndices)
+function disparity = disparityMain(roadPoints, matchedPointsLeft, matchedPointsRight, matchingIndices)
     disparity = calcDisparity(matchedPointsLeft, matchedPointsRight);
     drawDisparity(disparity, roadPoints, matchedPointsLeft, matchedPointsRight, matchingIndices);
     classifiedPoints = disparityClassification(roadPoints,matchingIndices, disparity);
