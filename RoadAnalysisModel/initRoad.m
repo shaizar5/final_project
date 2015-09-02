@@ -12,7 +12,7 @@ switch mode
         roadPoints = generateOnAndAboveRoad(totalNumOfPoints);
 	case 'road_points'
         totalNumOfPoints = Constants.NUM_OF_POINT_TO_GENERATE;
-        roadPoints = generateOnAbove(totalNumOfPoints,0)
+        roadPoints = generateOnAbove(totalNumOfPoints,0);
     case 'disparity'
         roadRight = Constants.ROAD_WIDTH/2;
         roadLeft  = -roadRight;
@@ -82,7 +82,7 @@ function points = generateOnAndAboveRoad(numOfPoints)
     
     onRoadPoints = generateOnAbove(numOfPoints/2,0);
     aboveRoadPoints = generateOnAbove(numOfPoints/2,1);
-    if (Constants.HOMOGRAPHY_UNIT_TEST==1)
+    if (Constants.HOMOGRAPHY_UNIT_TEST==1 || Constants.FUNDEMENTAL_MATRIX_UNIT_TEST==1)
         assert((Constants.HOMOGRAPHY_UNIT_TEST_ON_ROAD + Constants.HOMOGRAPHY_UNIT_TEST_ABOVE_ROAD == Constants.NUM_OF_POINT_TO_GENERATE), 'error in HOMOGGRAPHY UNIT TEST')
         onRoadPoints = generateOnAbove(Constants.HOMOGRAPHY_UNIT_TEST_ON_ROAD,0);
         aboveRoadPoints = generateOnAbove(Constants.HOMOGRAPHY_UNIT_TEST_ABOVE_ROAD,1);

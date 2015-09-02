@@ -1,12 +1,22 @@
 function roadAnalysisModel()
 %%
+clearvars;
+% globals
+    global deg epipolarGeometry dynamicShape
+    deg = Constants.TRANSLATION_VECTOR_INITIAL_DEG;
+    epipolarGeometry = EpipolarGeometry;
+    dynamicShape = DynamicShape;
+%%
     runMode = 'on_above';
-    
+    %secondRunMode = 'dynamic_shape';
+    secondRunMode = '';
     initialFiguresState(runMode);
     [roadPoints, totalNumOfPoints] = initRoad(runMode);
-    [Ct,projectionMatrixes,roadPointsOnImagePlane,roadPoints2d,actualIndices] = initDataMembers(totalNumOfPoints);
-    pause;
+    dynamic_shape_points = dynamicShape.generatePoints(Constants.DYNAMIC_SHAPE_NUM_OF_POINTS, Constants.DYNAMIC_SHAPE_LOCATION);
+    dynamicShape = dynamicShape.init(Constants.DYNAMIC_SHAPE_LOCATION, dynamic_shape_points', Constants.DYNAMIC_SHAPE_DX);
+    [Ct,projectionMatrixes,roadPointsOnImagePlane,roadPoints2d,actualIndices] = initDataMembers(totalNumOfPoints+Constants.DYNAMIC_SHAPE_NUM_OF_POINTS);
     
+    pause;
     if (Constants.drawRoad)
         drawRoad()
     end
@@ -26,6 +36,12 @@ function roadAnalysisModel()
     
     %%
     for step=1:Constants.NUM_OF_STEPS
+        % draw dynamic shapes
+        if (strcmp(secondRunMode,'dynamic_shape'))
+            dynamicShape.points = dynamicShape.points+repmat(dynamicShape.DX,Constants.DYNAMIC_SHAPE_NUM_OF_POINTS,1);
+            roadPoints(:,(totalNumOfPoints+1):totalNumOfPoints+Constants.DYNAMIC_SHAPE_NUM_OF_POINTS) = dynamicShape.points';
+            %roadPoints(:,(totalNumOfPoints+1):totalNumOfPoints+50) = dynamicShape.points
+        end
         i = min(step,Constants.NUM_OF_CAMERA_HISTORY);
         [f, px, py, mx, my, s] = getInternalParameters();    
         [R, currCt] = initCamreaByStep(step);
@@ -37,7 +53,7 @@ function roadAnalysisModel()
         
         drawCameraPlane(planeBoundries);
         [projectionMatrixes(:,:,i), K] = ProjectionMatrix(R,currCt,f,px,py,mx,my,s);
-        [roadPointsOnImagePlane(:,:,i), roadPoints2d(:,:,i), actualIndices(:,i)] = calc(roadPoints,totalNumOfPoints, planeBoundries, projectionMatrixes(:,:,i), currCt, i,R, f);        
+        [roadPointsOnImagePlane(:,:,i), roadPoints2d(:,:,i), actualIndices(:,i)] = calc(roadPoints,totalNumOfPoints+Constants.DYNAMIC_SHAPE_NUM_OF_POINTS, planeBoundries, projectionMatrixes(:,:,i), currCt, step,R, f);        
        
         walkingCane(currCt,step);
         
@@ -52,10 +68,14 @@ function roadAnalysisModel()
         
         %%
         % Dynamic Analysis module
-        epipolarLines(roadPoints2d, matchedPointsLeft, matchedPointsRight);
+        epipolarLines(roadPoints2d, matchedPointsLeft, matchedPointsRight, matchingIndices, step);
+        objectsOpticFlow(matchedPointsLeft, matchedPointsRight, matchingIndices, step)
         %%
         % P2 estimation module
-        P2_estimation(matchedPointsLeft, matchedPointsRight, matchingIndices, K);
+        P2_estimation(matchedPointsLeft, matchedPointsRight, matchingIndices, K, step);
+        %%
+        % Ground Detector module
+        groundDetectorModule(matchedPointsLeft, matchedPointsRight, matchingIndices, step);
         %%
         % Disaprity calculator
         disparityMain(roadPoints, matchedPointsLeft, matchedPointsRight, matchingIndices);
@@ -65,6 +85,8 @@ function roadAnalysisModel()
             draw3dDisparityVolume(disparity, roadPoints, matchingIndices);
         end
         [roadPointsOnImagePlane,roadPoints2d,actualIndices,projectionMatrixes] = updateHistoryData(roadPointsOnImagePlane,roadPoints2d,actualIndices,projectionMatrixes);
-        pause;
+        if (Constants.TRANSLATION_VECTOR_UNIT_TEST~=1)
+            pause;
+        end
     end    
 end
