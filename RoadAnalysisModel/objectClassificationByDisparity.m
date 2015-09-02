@@ -1,8 +1,6 @@
 function objectClassificationByDisparity(roadPoints, matchedPointsLeft, matchedPointsRight, matchingIndices,disparity)
    objectsToFind = 3;
-   disparity
-   idx = kmeans(disparity',objectsToFind)
-
+   idx = kmeans(disparity',objectsToFind);
    figure(2)
    
    size(matchedPointsLeft,1)

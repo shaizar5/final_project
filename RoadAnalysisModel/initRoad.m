@@ -36,7 +36,6 @@ switch mode
             aboveRoadPointsSquare = generateSquare(Constants.NUM_OF_POINT_TO_GENERATE/(Constants.NUM_OF_SHAPES+1),location,20);
             roadPoints = [roadPoints,aboveRoadPointsSquare];
         end
-        totalNumOfPoints =130; %TODO:: check this 130
         %drawPoints(roadPoints, '*m');
         totalNumOfPoints =Constants.NUM_OF_POINT_TO_GENERATE;
         
