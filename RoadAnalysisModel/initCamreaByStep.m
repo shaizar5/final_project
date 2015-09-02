@@ -5,7 +5,7 @@ yaw = getYrotation();
 roll = getZrotation();
 
 
-R = Utilities.rotationMatrix(horizon,yaw,roll)
+R = Utilities.rotationMatrix(horizon,yaw,roll);
 %end
 stepSizeNoise = floor(Constants.MIN_STEP_SIZE_MISTAKE + (Constants.MAX_STEP_SIZE_MISTAKE-Constants.MIN_STEP_SIZE_MISTAKE+1)*rand(1));
 stepSizeWithNoise = Constants.AVERAGE_BLIND_MAN_SPEED+stepSizeNoise;
@@ -17,23 +17,30 @@ end
 
 function horizon = getXrotation(step)
 
-
+global deg
 cameraRotationNoise = floor(Constants.MIN_CAMERA_ROTATION_HORIZON_IN_DEGREES_MISTAKE + (Constants.MAX_CAMERA_ROTATION_HORIZON_IN_DEGREES_MISTAKE-Constants.MIN_CAMERA_ROTATION_HORIZON_IN_DEGREES_MISTAKE+1)*rand(1));
 cameraRotationHorizonWithNoise = Constants.CAMERA_ROTATION_HORIZON_IN_DEGREES + cameraRotationNoise;
 horizon = degtorad(cameraRotationHorizonWithNoise);
 if (Constants.TRANSLATION_VECTOR_UNIT_TEST==1)
     assert (Constants.NUM_OF_STEPS > 2);
     factor = Constants.TRANSLATION_VECTOR_FACTOR;
-    global deg
+    
+    %ab = abs(deg)
+    if (deg >= Constants.TRANSLATION_VECTOR_MAX_DEG)
+       offset = (round((rand(1))*10)/10);
+       deg = Constants.TRANSLATION_VECTOR_INITIAL_DEG-offset;
+    end
     if (step >2)
         if (deg >=0)
             deg = -(deg+factor);
         else
-            deg = -(deg-factor);
+            deg = -(deg);
         end
     end
-    horizon = degtorad(deg);
+    deg;
 end
+horizon = horizon + degtorad(deg);
+radtodeg(horizon);
 end
 
 function yaw = getYrotation()

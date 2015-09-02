@@ -1,56 +1,44 @@
-function H = HomographyEstimation(leftPoints, rightPoints, method, matchingIndices, K)
+function res = HomographyEstimation(leftPoints, rightPoints, matchingIndices, method, K)
 
 if (strcmp(method,'RANSAC'))
     k=10;
     numOfIteration=Constants.NUM_OF_POINT_TO_GENERATE*2;
     threshDist=1.0e-3;
     inliersRatio=0.1;
-    [H, inliers, outliers, error] = RANSAC(leftPoints, rightPoints, 0, k, numOfIteration, threshDist, inliersRatio);
-    
-    if (Constants.HOMOGRAPHY_UNIT_TEST==1)
-        assert(Constants.NUM_OF_STEPS==2)
-        displayHomographyUnitTest(size(leftPoints), matchingIndices, inliers, outliers, error, k, numOfIteration, threshDist);
-    end
-    
+    res = RANSAC(leftPoints, rightPoints, matchingIndices, @computeHdirectly, @measureHomographyError, k, numOfIteration, threshDist, inliersRatio, Constants.HOMOGRAPHY_UNIT_TEST_FIGURE);
 else
     % copmute H directly    
-    H = Utilities.computeHdirectly(leftPoints, rightPoints);
+    H = computeHdirectly(leftPoints, rightPoints);
+    res = RansacResults(H, [], [], []);
 end
 
 end
 
-function displayHomographyUnitTest(sizeLeft, matchingIndices, inliers, outliers, error, k, numOfIteration, threshDist)
-     
-    figure(100) ; clf
-    subplot(2,1,1);
-    res = zeros(1,length(matchingIndices));
-    res(:) = max(error)*1.2;
-    x = [1:length(res)];
-    y = [max(error)*1.1];
-    plot(x,y,'-g')
-    text(100,max(error)+20, '\uparrow points that not matched between 2 frames')
-    hold on
-    res(matchingIndices) = error;
-    axis([1 length(res) min(res) max(res)])
-    plot ([1:length(res)], res, '*')
-    hold on
-    str = ['#matched points = ',num2str(sizeLeft(2)),' (out of ',num2str(Constants.NUM_OF_POINT_TO_GENERATE),'), k = ',num2str(k),', #iterations = ',num2str(numOfIteration)];
-    title(str)
-    x = [Constants.HOMOGRAPHY_UNIT_TEST_ON_ROAD, Constants.HOMOGRAPHY_UNIT_TEST_ON_ROAD];
-    y = [0, max(res)];
-    plot(x,y,'-r')
-    hold on
-    subplot(2,1,2);
-    axis([1 length(res) min(res) threshDist])
-    plot ([1:length(res)], res, '*')
-    ylim([0 threshDist])
-    perfectNumOfInliers = length(find(matchingIndices<=Constants.HOMOGRAPHY_UNIT_TEST_ON_ROAD));
-    perfectNumOfOutliers = length(matchingIndices)-perfectNumOfInliers;
-    assert(perfectNumOfInliers+perfectNumOfOutliers==length(matchingIndices), 'error in perferct matching')
-    str = ['#inliers = ',num2str(length(inliers)),' (actual ',num2str(perfectNumOfInliers) '), #outliers = ',num2str(length(outliers)),' (actual ',num2str(perfectNumOfOutliers) ')'];
-    title(str)
-    hold on
-    plot(x,y,'-r')
-    hold on
+function error=measureHomographyError(H, left, right)
+    % measure homography error by:
+    % H*p1-p2=0
+    res = H*[left;ones(1,size(left,2))];
+    res = Utilities.divideMatrixByLastRow(res);
+    res = res-[right;ones(1,size(right,2))];
+    error = diag(res'*res);
 end
 
+function H=computeHdirectly(leftPoints, rightPoints)
+    sizeLeft = size(leftPoints);
+    sizeRight = size(rightPoints);
+    if (sizeLeft(1) ~= sizeRight(1) || sizeLeft(2) ~= sizeRight(2))
+        'input not have same size'
+        return
+    end
+
+    Aodd  = [-leftPoints(1,:)', -leftPoints(2,:)', -ones(1,sizeLeft(2))', zeros(1,sizeLeft(2))', zeros(1,sizeLeft(2))', zeros(1,sizeLeft(2))', rightPoints(1,:)'.*leftPoints(1,:)', rightPoints(1,:)'.*leftPoints(2,:)', rightPoints(1,:)'];
+    Aeven = [zeros(1,sizeLeft(2))', zeros(1,sizeLeft(2))', zeros(1,sizeLeft(2))', -leftPoints(1,:)', -leftPoints(2,:)', -ones(1,sizeLeft(2))', rightPoints(2,:)'.*leftPoints(1,:)', rightPoints(2,:)'.*leftPoints(2,:)', rightPoints(2,:)'];
+
+    A = zeros(sizeLeft(2)*2, 9);
+    A(1:2:end,:) = Aodd;
+    A(2:2:end,:) = Aeven;
+
+    [~,~,R] = svd(A);
+    X = R(:,end);
+    H = reshape(X,3,3)';
+end

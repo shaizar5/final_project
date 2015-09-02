@@ -1,25 +1,22 @@
-function foe = epipolarLines(roadPoints2d, matchedPointsLeft, matchedPointsRight,step)
+function epipolarLines(roadPoints2d, matchedPointsLeft, matchedPointsRight, matchingIndices, step)
+global epipolarGeometry
 matchPointSize = size(matchedPointsLeft);
 if (matchPointSize(1)<8)
     return
 end
-F = estimateFundamentalMatrix(matchedPointsLeft, matchedPointsRight, 'Method', 'RANSAC', 'NumTrials', 10000, 'DistanceThreshold', 0.1, 'Confidence', 99.99);
-
+fundementalMatrixResult = fundementalMatrixEstimation(matchedPointsLeft',matchedPointsRight', matchingIndices, 'RANSAC');
+epipolarGeometry.fundementalMatrix = fundementalMatrixResult;
+F = fundementalMatrixResult.T;
+%F1 = estimateFundamentalMatrix(matchedPointsLeft, matchedPointsRight, 'Method', 'RANSAC', 'NumTrials', 10000, 'DistanceThreshold', 0.1, 'Confidence', 99.99)
 el = findEpipol(F, matchedPointsRight,'right');
 er = findSelfEpipol(F, matchedPointsRight);
 
-foe = [el , er];
-if (Constants.drawEpipolarLines)
+epipolarGeometry.previousFOE = el;
+epipolarGeometry.currentFOE = er;
+if (Constants.drawEpipolarLines && Constants.drawPointsIn2dFigures)
     drawEpipolarLines(roadPoints2d(:,:,2), er,step+1);
 end
-if (Constants.drawEpipole)
-    if (step==2)
-        figure(step)
-        plot(el(1),el(2), 'g*')
-    end
-    figure(step+1)
-    plot(er(1),er(2), 'g*')
-end
+epipolarGeometry.drawFOE(el,er,step)
 %{
     f=50;
     t = getImagePointsIn3D([0;0], el(1:2), Ct(:,1), projectionMatrixes(:,1:4), R, f, 'ro');
