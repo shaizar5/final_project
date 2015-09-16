@@ -16,6 +16,15 @@ grid on
 cameratoolbar('Show')
 cameratoolbar('SetMode','zoom')
 cameratoolbar('SetCoordSys','y')
+
+figure(301); clf
+axis(Constants.EDGE*[-1 1 -1 1 -1 1]);
+hold on
+grid on
+cameratoolbar('Show')
+cameratoolbar('SetMode','zoom')
+cameratoolbar('SetCoordSys','y')
+
 end
 
 function initFigures2d()

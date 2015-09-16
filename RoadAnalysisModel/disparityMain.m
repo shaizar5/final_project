@@ -4,11 +4,10 @@ function disparity = disparityMain(roadPoints, matchedPointsLeft, matchedPointsR
     classifiedPoints = disparityClassification(roadPoints,matchingIndices, disparity);
 
     if (Constants.drawDisparityClassification)
-        drawPoints (classifiedPoints, 'og')
+        drawPoints (classifiedPoints, [], 'om')
     end
     
- %   if (strcmp(Constants.RUN_MODE,'disparity'))
- %      draw3dDisparityVolume(disparity, roadPoints, matchingIndices);
- %   end
-
+    if (Constants.drawDisparityVolume3d)
+       draw3dDisparityVolume(disparity, roadPoints, matchingIndices);
+    end
 end

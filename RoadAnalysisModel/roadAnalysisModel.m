@@ -7,7 +7,7 @@ clearvars;
     epipolarGeometry = EpipolarGeometry;
     dynamicShape = DynamicShape;
 %%
-    runMode = 'on_above';
+    runMode = 'shapes';
     %secondRunMode = 'dynamic_shape';
     secondRunMode = '';
     initialFiguresState(runMode);
@@ -20,7 +20,7 @@ clearvars;
     if (Constants.drawRoad)
         drawRoad()
     end
-    
+    figure(1)
     if (Constants.drawPointsIn3d)
         drawPoints (roadPoints, [] , '*b')
     end
@@ -30,10 +30,9 @@ clearvars;
       numOfSteps=2;
     end
         
-    for step=1:numOfSteps
-        drawPoints (roadPoints, 0, '*b')
-    end
-    
+    %for step=1:numOfSteps
+    drawPoints (roadPoints, 0, '*b')
+    %end
     %%
     for step=1:Constants.NUM_OF_STEPS
         % draw dynamic shapes
@@ -50,7 +49,7 @@ clearvars;
         figure (1)
         intersectionPoints = lineAndPlaneIntersection(imagePlane, Ct(:,i), Ct(:,i)+50*R(3,:)');
         planeBoundries = calcFOV(Ct(:,i), f, intersectionPoints, R(3,:)');
-        
+
         drawCameraPlane(planeBoundries);
         [projectionMatrixes(:,:,i), K] = ProjectionMatrix(R,currCt,f,px,py,mx,my,s);
         [roadPointsOnImagePlane(:,:,i), roadPoints2d(:,:,i), actualIndices(:,i)] = calc(roadPoints,totalNumOfPoints+Constants.DYNAMIC_SHAPE_NUM_OF_POINTS, planeBoundries, projectionMatrixes(:,:,i), currCt, step,R, f);        
@@ -61,11 +60,9 @@ clearvars;
              pause;
             continue   
         end
-       
         %%
         % Tracking - used as input to all modules 
         [matchedPointsLeft, matchedPointsRight, matchingIndices] = findMatchingPoints(roadPoints2d, actualIndices);
-        
         %%
         % Dynamic Analysis module
         epipolarLines(roadPoints2d, matchedPointsLeft, matchedPointsRight, matchingIndices, step);
@@ -75,11 +72,13 @@ clearvars;
         P2_estimation(matchedPointsLeft, matchedPointsRight, matchingIndices, K, step);
         %%
         % Ground Detector module
-        groundDetectorModule(matchedPointsLeft, matchedPointsRight, matchingIndices, step);
+        [roadPointsGround, abovePoints, inliers, outliers] = groundDetectorModule(matchedPointsLeft, matchedPointsRight, matchingIndices, step);
+
         %%
         % Disaprity calculator
         disparity = disparityMain(roadPoints, matchedPointsLeft, matchedPointsRight, matchingIndices);
         objectClassificationByDisparity(roadPoints, matchedPointsLeft, matchedPointsRight, matchingIndices,disparity);
+
         %%
         classifyPoints(roadPointsOnImagePlane,actualIndices,Ct,i);
         if (strcmp(runMode,'disparity'))

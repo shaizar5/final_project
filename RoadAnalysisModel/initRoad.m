@@ -38,7 +38,26 @@ switch mode
         end
         %drawPoints(roadPoints, '*m');
         totalNumOfPoints =Constants.NUM_OF_POINT_TO_GENERATE;
+    case 'all'
+        %road points:
+        totalNumOfPointsOnRoad = Constants.NUM_OF_POINT_TO_GENERATE;
+        roadPointsOnRoad = generateOnAbove(totalNumOfPointsOnRoad,0);
         
+        %shapes:
+        roadPointsShapes = generatePoints(Constants.NUM_OF_POINT_TO_GENERATE/(Constants.NUM_OF_SHAPES+1));
+        for i=1:Constants.NUM_OF_SHAPES
+            location = generateLocationInRange();
+            aboveRoadPointsSquare = generateSquare(Constants.NUM_OF_POINT_TO_GENERATE/(Constants.NUM_OF_SHAPES+1),location,20);
+            roadPointsShapes = [roadPointsShapes,aboveRoadPointsSquare];
+        end
+        totalNumOfPointsShapes =Constants.NUM_OF_POINT_TO_GENERATE;
+
+        %random:
+        totalNumOfPointsRandom = Constants.NUM_OF_POINT_TO_GENERATE;
+        roadPointsRandom = generatePoints(totalNumOfPointsRandom);
+        
+        roadPoints = [roadPointsOnRoad, roadPointsShapes,roadPointsRandom];
+        totalNumOfPoints = totalNumOfPointsOnRoad + totalNumOfPointsShapes + totalNumOfPointsRandom;
     otherwise
         warning('Error using initRoad')
 end
