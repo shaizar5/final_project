@@ -8,10 +8,7 @@ function [roadPointsOnImagePlane, roadPoints2d, actualPointsIndices] = calc(road
     
     roadPointsOnImagePlane(:, sizeRoad+1:totalNumOfPoints) = 0;
     roadPoints2d(:, sizeRoad+1:totalNumOfPoints) = 0;
-    actualPointsIndices(:, sizeRoad+1:totalNumOfPoints) = 0;
- 
-    
-    
+    actualPointsIndices(:, sizeRoad+1:totalNumOfPoints) = 0;    
 end
 
 function [pointsIn3D, points2d, actualPointsIndices] = featuresPoints(points, planeBoundries, P, Ct, R, f,i)

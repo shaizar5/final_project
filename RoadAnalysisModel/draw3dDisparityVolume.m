@@ -1,5 +1,5 @@
 function draw3dDisparityVolume(disparity, roadPoints, matchingIndices)
-    figure(1)
+    figure(Constants.DISPARITY_VOLUME_3D)
     hold on
     len = size(disparity,2);
     points = zeros(4,len);
@@ -8,7 +8,6 @@ function draw3dDisparityVolume(disparity, roadPoints, matchingIndices)
         points(:,i) = [roadPoints(:,index);disparity(i)*10];
     end
      
-    
     points = sortrows(points',4)';
     points = fliplr(points);
     numberOfStepsFull = length(points(4,:));
@@ -24,7 +23,5 @@ function draw3dDisparityVolume(disparity, roadPoints, matchingIndices)
       histEqVersion = linspace(minValue, maxValue, numberOfSteps); 
 
       scatter3(points(1,:),points(2,:),points(3,:),10,histEqVersion*100,'fill');
-      pause(1);
    end
-    %colorbar
 end

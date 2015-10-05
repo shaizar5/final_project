@@ -7,7 +7,7 @@ clearvars;
     epipolarGeometry = EpipolarGeometry;
     dynamicShape = DynamicShape;
 %%
-    runMode = 'shapes';
+    runMode = 'all';
     %secondRunMode = 'dynamic_shape';
     secondRunMode = '';
     initialFiguresState(runMode);
@@ -20,7 +20,8 @@ clearvars;
     if (Constants.drawRoad)
         drawRoad()
     end
-    figure(1)
+    
+    figure(Constants.MAIN_3D_FIGURE)
     if (Constants.drawPointsIn3d)
         drawPoints (roadPoints, [] , '*b')
     end
@@ -29,12 +30,9 @@ clearvars;
     if (strcmp(runMode,'disparity'))
       numOfSteps=2;
     end
-        
-    %for step=1:numOfSteps
-    drawPoints (roadPoints, 0, '*b')
-    %end
+
     %%
-    for step=1:Constants.NUM_OF_STEPS
+    for step=1:numOfSteps
         % draw dynamic shapes
         if (strcmp(secondRunMode,'dynamic_shape'))
             dynamicShape.points = dynamicShape.points+repmat(dynamicShape.DX,Constants.DYNAMIC_SHAPE_NUM_OF_POINTS,1);
@@ -46,7 +44,7 @@ clearvars;
         [R, currCt] = initCamreaByStep(step);
         Ct(:,i) = currCt;
         imagePlane = drawCameraAxis(currCt,R,f,'c');
-        figure (1)
+        figure (Constants.MAIN_3D_FIGURE)
         intersectionPoints = lineAndPlaneIntersection(imagePlane, Ct(:,i), Ct(:,i)+50*R(3,:)');
         planeBoundries = calcFOV(Ct(:,i), f, intersectionPoints, R(3,:)');
 
@@ -66,24 +64,33 @@ clearvars;
         %%
         % Dynamic Analysis module
         epipolarLines(roadPoints2d, matchedPointsLeft, matchedPointsRight, matchingIndices, step);
-        objectsOpticFlow(matchedPointsLeft, matchedPointsRight, matchingIndices, step)
+        objectsOpticFlow(matchedPointsLeft, matchedPointsRight)
         %%
         % P2 estimation module
         P2_estimation(matchedPointsLeft, matchedPointsRight, matchingIndices, K, step);
         %%
         % Ground Detector module
-        [roadPointsGround, abovePoints, inliers, outliers] = groundDetectorModule(matchedPointsLeft, matchedPointsRight, matchingIndices, step);
+        [inliers, outliers] = groundDetectorModule(matchedPointsRight, matchingIndices);
 
+        if (Constants.drawGroundClassification)
+            figure(Constants.POINTS_CLASSIFICATION_3D);
+            roadPoints3d = roadPoints(:,matchingIndices(inliers));
+            abovePoints3d = roadPoints(:,matchingIndices(outliers));
+            drawPoints(roadPoints3d, [] , '*g');
+            drawPoints(abovePoints3d, matchingIndices(outliers) , '*r');
+        end
+        figure(Constants.MAIN_3D_FIGURE)
         %%
         % Disaprity calculator
-        disparity = disparityMain(roadPoints, matchedPointsLeft, matchedPointsRight, matchingIndices);
-        objectClassificationByDisparity(roadPoints, matchedPointsLeft, matchedPointsRight, matchingIndices,disparity);
+        disparityAll = disparityMain(roadPoints, matchedPointsLeft, matchedPointsRight, matchingIndices);
+        disparity = disparityMain(roadPoints, matchedPointsLeft(outliers,:), matchedPointsRight(outliers,:), matchingIndices(outliers));
+        
+        objectClassificationByDisparity(matchedPointsLeft,disparityAll,Constants.OBJECT_CLASSIFICATION_BY_DISPARITY_ALL);
+        objectClassificationByDisparity(matchedPointsLeft(outliers,:),disparity,Constants.OBJECT_CLASSIFICATION_BY_DISPARITY_OUTLIERS);
 
         %%
-        classifyPoints(roadPointsOnImagePlane,actualIndices,Ct,i);
-        if (strcmp(runMode,'disparity'))
-            draw3dDisparityVolume(disparity, roadPoints, matchingIndices);
-        end
+        %classifyPoints(roadPointsOnImagePlane,actualIndices,Ct,i);
+        
         [roadPointsOnImagePlane,roadPoints2d,actualIndices,projectionMatrixes] = updateHistoryData(roadPointsOnImagePlane,roadPoints2d,actualIndices,projectionMatrixes);
         if (Constants.TRANSLATION_VECTOR_UNIT_TEST~=1)
             pause;

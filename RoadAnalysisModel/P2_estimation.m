@@ -57,7 +57,5 @@ if (Constants.TRANSLATION_VECTOR_UNIT_TEST==1 && step == Constants.NUM_OF_STEPS)
     %for i=length(error)
     %    text (error(i), translation(i), num2str(translation(i)))
     %end
-    
 end
-
 end

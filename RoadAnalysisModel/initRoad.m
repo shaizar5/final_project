@@ -40,20 +40,20 @@ switch mode
         totalNumOfPoints =Constants.NUM_OF_POINT_TO_GENERATE;
     case 'all'
         %road points:
-        totalNumOfPointsOnRoad = Constants.NUM_OF_POINT_TO_GENERATE;
-        roadPointsOnRoad = generateOnAbove(totalNumOfPointsOnRoad,0);
+        totalNumOfPointsOnRoad = Constants.NUM_OF_ROAD_POINTS;
+        roadPointsOnRoad = generateOnAbove(totalNumOfPointsOnRoad,0.001);
         
         %shapes:
-        roadPointsShapes = generatePoints(Constants.NUM_OF_POINT_TO_GENERATE/(Constants.NUM_OF_SHAPES+1));
+        roadPointsShapes = [];
         for i=1:Constants.NUM_OF_SHAPES
             location = generateLocationInRange();
-            aboveRoadPointsSquare = generateSquare(Constants.NUM_OF_POINT_TO_GENERATE/(Constants.NUM_OF_SHAPES+1),location,20);
+            aboveRoadPointsSquare = generateSquare(Constants.NUM_OF_SHAPES_POINTS/(Constants.NUM_OF_SHAPES),location,20);
             roadPointsShapes = [roadPointsShapes,aboveRoadPointsSquare];
         end
-        totalNumOfPointsShapes =Constants.NUM_OF_POINT_TO_GENERATE;
+        totalNumOfPointsShapes =Constants.NUM_OF_SHAPES_POINTS;
 
         %random:
-        totalNumOfPointsRandom = Constants.NUM_OF_POINT_TO_GENERATE;
+        totalNumOfPointsRandom = Constants.NUM_OF_RANDOM_POINTS;
         roadPointsRandom = generatePoints(totalNumOfPointsRandom);
         
         roadPoints = [roadPointsOnRoad, roadPointsShapes,roadPointsRandom];
@@ -97,7 +97,6 @@ function points = generatePoints(numOfPoints)
 end
 
 function points = generateOnAndAboveRoad(numOfPoints) 
-    
     onRoadPoints = generateOnAbove(numOfPoints/2,0);
     aboveRoadPoints = generateOnAbove(numOfPoints/2,1);
     if (Constants.HOMOGRAPHY_UNIT_TEST==1 || Constants.FUNDEMENTAL_MATRIX_UNIT_TEST==1)

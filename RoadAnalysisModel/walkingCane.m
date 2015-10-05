@@ -2,6 +2,7 @@ function walkingCane(ct,step)
   if (~Constants.SHOW_WALKING_CANE)
       return
   end
+  
   walkingCaneHand = 1;
   if (~Constants.WALKING_CANE_ON_RIGHT_HAND)
      walkingCaneHand = -1;
@@ -17,7 +18,7 @@ function walkingCane(ct,step)
   caneRadius = Constants.CANE_RADIUS;
   caneDensity = Constants.CANE_DENSITY;
   [Cylinder, EndPlate1, EndPlate2] = Cylinder3D(caneStartPos,caneEndPos,caneRadius,caneDensity,'k',1,0);
-  figure(1)
+  figure(Constants.MAIN_3D_FIGURE)
   plot (Cylinder)
   plot (EndPlate1)
   plot (EndPlate2)

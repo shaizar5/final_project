@@ -8,7 +8,6 @@ function [actualRoadPoints3d, roadPoints2d, indices] = project3dPointsToPlane(P,
     top = Utilities.nonHomogeneousCoords(P*[planeBoundries(3,:),1]');
     right = Utilities.nonHomogeneousCoords(P*[planeBoundries(4,:),1]');
     
-    
     counter=1;
     s = size(roadPoints2d);
     tmp = zeros(2,1);

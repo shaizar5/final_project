@@ -21,7 +21,6 @@ function planeBoundries = calcFOV(Ct, focalLength, principlePoint, opticalAxis)
         plot3(edgeLeft(1),edgeTop(2),edgeTop(3),'og') %top-left
         plot3(edgeRight(1),edgeTop(2),edgeTop(3),'og') %top-right    
     end
-
      
     planeLeftBottom = [edgeLeft(1),edgeBottom(2),edgeBottom(3)]';
     planeRightBottom = [edgeRight(1),edgeBottom(2),edgeBottom(3)]';

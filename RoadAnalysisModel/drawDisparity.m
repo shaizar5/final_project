@@ -19,12 +19,11 @@ function draw2dDisparity(disparity, matchedPointsRight, fig)
 end
 
 function draw3dDisparity(disparity, roadPoints, matchingIndices)
-    figure(1)
+    figure(Constants.MAIN_3D_FIGURE)
     len = size(disparity,2);
     for i=1:len
         index = matchingIndices(i);
         p = roadPoints(:,index);
-        %s = '';
         text(p(1),p(2)+3,p(3),strcat(strcat('\fontsize{12} \color{blue}','\fontsize{8}'),num2str(disparity(i))))
     end
 end

@@ -3,7 +3,7 @@ function res = HomographyEstimation(leftPoints, rightPoints, matchingIndices, me
 if (strcmp(method,'RANSAC'))
     k=10;
     numOfIteration=Constants.NUM_OF_POINT_TO_GENERATE*2;
-    threshDist=1.0e-3;
+    threshDist=Constants.HOMOGRAPHY_ESTIMATION_THRESH;
     inliersRatio=0.1;
     res = RANSAC(leftPoints, rightPoints, matchingIndices, @computeHdirectly, @measureHomographyError, k, numOfIteration, threshDist, inliersRatio, Constants.HOMOGRAPHY_UNIT_TEST_FIGURE);
 else

@@ -1,12 +1,17 @@
-function objectClassificationByDisparity(roadPoints, matchedPointsLeft, matchedPointsRight, matchingIndices,disparity)
+function objectClassificationByDisparity(matchedPoints,disparity,fig)
    objectsToFind = Constants.NUM_OF_SHAPES;
-   idx = kmeans(matchedPointsLeft,objectsToFind);
-   figure(Constants.DISPARITY_OBJECT_CLASSIFICATION)
-  
+   idx = kmeans(disparity',objectsToFind);
+   
+   if (length(idx)~=size(matchedPoints,1))
+      length(idx)
+      size(matchedPoints,1)
+      assert(0);
+   end
+   
    if (Constants.drawDisparityClassification)
-       figure(2)
-       for i=1:size(matchedPointsLeft,1)
-           Point = [matchedPointsLeft(i,1)+0.5, matchedPointsLeft(i,2)+0.5];
+       figure(fig)
+       for i=1:size(matchedPoints,1)
+           Point = [matchedPoints(i,1)+0.5, matchedPoints(i,2)+0.5];
            if (idx(i)==1)
                 plot(Point(1),Point(2), '*r');
            elseif (idx(i)==2)
@@ -16,6 +21,7 @@ function objectClassificationByDisparity(roadPoints, matchedPointsLeft, matchedP
            else
                 plot(Point(1),Point(2), '*y');
            end
+           hold on
        end
    end
 end

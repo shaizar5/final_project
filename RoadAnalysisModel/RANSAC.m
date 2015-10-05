@@ -69,12 +69,12 @@ function displayUnitTestResults(sizeLeft, matchingIndices, inliers, outliers, er
     figure(fig) ; clf
     s1 = subplot(2,1,1);
     title(s1,'RANSAC')
-    res = zeros(1,Constants.NUM_OF_POINT_TO_GENERATE);
+    res = zeros(1,1000);
     res(:) = max(error)*1.2;
     x = [1,length(res)];
     y = [max(error)*1.1,max(error)*1.1];
     plot(x,y,'-g')
-    if (sizeLeft(2) ~= Constants.NUM_OF_POINT_TO_GENERATE)
+    if (sizeLeft(2) ~=1000)
         text(2,max(error)*1.1, '\uparrow points that not matched between 2 frames')
     end
     hold on
@@ -87,7 +87,7 @@ function displayUnitTestResults(sizeLeft, matchingIndices, inliers, outliers, er
     elseif (fig==Constants.FUNDEMENTAL_MATRIX_UNIT_TEST_FIGURE)
         add_str = ['Estimation of Fundemental Matrix using RANSAC'];
     end
-    str = {add_str, ' ',['#matched points = ',num2str(sizeLeft(2)),' (out of ',num2str(Constants.NUM_OF_POINT_TO_GENERATE),'), k = ',num2str(k),', #iterations = ',num2str(numOfIteration)]};
+    str = {add_str, ' ',['#matched points = ',num2str(sizeLeft(2)),' (out of ',num2str(1000),'), k = ',num2str(k),', #iterations = ',num2str(numOfIteration)]};
     title(str)
     x = [Constants.HOMOGRAPHY_UNIT_TEST_ON_ROAD, Constants.HOMOGRAPHY_UNIT_TEST_ON_ROAD];
     y = [0, max(res)];

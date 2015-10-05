@@ -4,7 +4,6 @@ horizon = getXrotation(step);
 yaw = getYrotation();
 roll = getZrotation();
 
-
 R = Utilities.rotationMatrix(horizon,yaw,roll);
 %end
 stepSizeNoise = floor(Constants.MIN_STEP_SIZE_MISTAKE + (Constants.MAX_STEP_SIZE_MISTAKE-Constants.MIN_STEP_SIZE_MISTAKE+1)*rand(1));
@@ -14,6 +13,7 @@ cameraHeightWithNoise = Constants.CAMERA_HEIGHT + cameraHeightNoise;
 
 Ct = [0,cameraHeightWithNoise,(step-1)*stepSizeWithNoise*(1/Constants.FRAMES_PER_SECOND)]';
 end
+
 
 function horizon = getXrotation(step)
 
@@ -37,7 +37,6 @@ if (Constants.TRANSLATION_VECTOR_UNIT_TEST==1)
             deg = -(deg);
         end
     end
-    deg;
 end
 horizon = horizon + degtorad(deg);
 radtodeg(horizon);

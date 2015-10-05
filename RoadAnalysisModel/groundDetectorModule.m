@@ -1,8 +1,7 @@
-function [roadPoints, abovePoints, inliers, outliers] = groundDetectorModule(matchedPointsLeft, matchedPointsRight, matchingIndices, step)
+function [inliers, outliers] = groundDetectorModule(matchedPointsRight, matchingIndices)
     global epipolarGeometry
     inliers = epipolarGeometry.roadHomography.inliers;
     outliers = epipolarGeometry.roadHomography.outliers;
-    
     
     roadPoints = matchedPointsRight(inliers,:);
     abovePoints = matchedPointsRight(outliers,:);

@@ -1,5 +1,5 @@
 function imagePointsIn3D = getImagePointsIn3D(actualRoadPoints3d, roadPoints2d, Ct, P, R, f, prop)
-    figure(1)
+    figure(Constants.MAIN_3D_FIGURE)
     s = size(roadPoints2d);
     
     if (sum(s)==0)
@@ -26,7 +26,7 @@ function imagePointsIn3D = getImagePointsIn3D(actualRoadPoints3d, roadPoints2d, 
 end
 
 function drawIntersectionPoints(actualRoadPoints3d, Ct)
-    figure(1)
+    figure(Constants.MAIN_3D_FIGURE)
     pointsLength = size(actualRoadPoints3d);
     if (pointsLength(2)<1)
         return

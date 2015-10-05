@@ -6,7 +6,5 @@ function disparity = calcDisparity(matchedPointsLeft, matchedPointsRight)
         p1 = matchedPointsLeft(i,:);
         p2 = matchedPointsRight(i,:);
         disparity(i) = Utilities.distance(p1,p2);
-    end
-    
-    
+    end   
 end

@@ -9,22 +9,15 @@ drawWorldAxis();
 end
 
 function initFigure3d()
-figure(1); clf
-axis(Constants.EDGE*[-1 1 -1 1 -1 1]);
-hold on
-grid on
-cameratoolbar('Show')
-cameratoolbar('SetMode','zoom')
-cameratoolbar('SetCoordSys','y')
-
-figure(301); clf
-axis(Constants.EDGE*[-1 1 -1 1 -1 1]);
-hold on
-grid on
-cameratoolbar('Show')
-cameratoolbar('SetMode','zoom')
-cameratoolbar('SetCoordSys','y')
-
+for i=1:size(Constants.FIGURES_3D,2)
+    figure(Constants.FIGURES_3D(i)); clf
+    axis(Constants.EDGE*[-1 1 -1 1 -1 1]);
+    hold on
+    grid on
+    cameratoolbar('Show')
+    cameratoolbar('SetMode','zoom')
+    cameratoolbar('SetCoordSys','y')
+end
 end
 
 function initFigures2d()
@@ -34,6 +27,11 @@ if (Constants.drawPointsIn2dFigures)
         % if changing FOV then need to change this also
         axis([-100 100 -100 100])
     end
+end
+
+for i=1:size(Constants.FIGURES_2D,2)
+    figure(Constants.FIGURES_2D(i)); clf
+    axis([-100 100 -100 100])
 end
 end
 
